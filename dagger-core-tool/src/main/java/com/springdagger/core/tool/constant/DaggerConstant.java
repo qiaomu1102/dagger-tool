@@ -5,7 +5,7 @@ package com.springdagger.core.tool.constant;
  *
  * @author Chill
  */
-public interface BladeConstant {
+public interface DaggerConstant {
 
 	/**
 	 * 编码

@@ -1,7 +1,7 @@
 package com.springdagger.core.tool.utils;
 
 import lombok.experimental.UtilityClass;
-import com.springdagger.core.tool.convert.BladeConversionService;
+import com.springdagger.core.tool.convert.DaggerConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.lang.Nullable;
@@ -33,7 +33,7 @@ public class ConvertUtil {
 		if (ClassUtil.isAssignableValue(targetType, source)) {
 			return (T) source;
 		}
-		GenericConversionService conversionService = BladeConversionService.getInstance();
+		GenericConversionService conversionService = DaggerConversionService.getInstance();
 		return conversionService.convert(source, targetType);
 	}
 
@@ -54,7 +54,7 @@ public class ConvertUtil {
 		if (source == null) {
 			return null;
 		}
-		GenericConversionService conversionService = BladeConversionService.getInstance();
+		GenericConversionService conversionService = DaggerConversionService.getInstance();
 		return (T) conversionService.convert(source, sourceType, targetType);
 	}
 
@@ -76,7 +76,7 @@ public class ConvertUtil {
 		if (source == null) {
 			return null;
 		}
-		GenericConversionService conversionService = BladeConversionService.getInstance();
+		GenericConversionService conversionService = DaggerConversionService.getInstance();
 		return (T) conversionService.convert(source, targetType);
 	}
 

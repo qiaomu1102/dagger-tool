@@ -4,11 +4,6 @@ package com.springdagger.core.tool.node;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Blade.
- *
- * @author Chill
- */
 public class NodeTest {
 
 	public static void main(String[] args) {

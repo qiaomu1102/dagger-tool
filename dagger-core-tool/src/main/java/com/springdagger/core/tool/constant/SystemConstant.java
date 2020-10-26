@@ -3,11 +3,6 @@ package com.springdagger.core.tool.constant;
 
 import lombok.Data;
 
-/**
- * Blade系统配置类
- *
- * @author Chill
- */
 @Data
 public class SystemConstant {
 

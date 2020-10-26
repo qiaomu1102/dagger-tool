@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import com.springdagger.core.tool.constant.BladeConstant;
+import com.springdagger.core.tool.constant.DaggerConstant;
 import com.springdagger.core.tool.utils.ObjectUtil;
 import org.springframework.lang.Nullable;
 
@@ -90,7 +90,7 @@ public class R<T> implements Serializable {
 	 * @return R
 	 */
 	public static <T> R<T> data(T data) {
-		return data(data, BladeConstant.DEFAULT_SUCCESS_MESSAGE);
+		return data(data, DaggerConstant.DEFAULT_SUCCESS_MESSAGE);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class R<T> implements Serializable {
 	 * @return R
 	 */
 	public static <T> R<T> data(int code, T data, String msg) {
-		return new R<>(code, data, data == null ? BladeConstant.DEFAULT_NULL_MESSAGE : msg);
+		return new R<>(code, data, data == null ? DaggerConstant.DEFAULT_NULL_MESSAGE : msg);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class R<T> implements Serializable {
 	 * @return R
 	 */
 	public static <T> R<T> status(boolean flag) {
-		return flag ? success(BladeConstant.DEFAULT_SUCCESS_MESSAGE) : fail(BladeConstant.DEFAULT_FAILURE_MESSAGE);
+		return flag ? success(DaggerConstant.DEFAULT_SUCCESS_MESSAGE) : fail(DaggerConstant.DEFAULT_FAILURE_MESSAGE);
 	}
 
 }

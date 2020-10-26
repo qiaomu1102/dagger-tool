@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Slf4j
 @AllArgsConstructor
-public class BladeConverter implements Converter {
+public class DaggerConverter implements Converter {
 	private static final ConcurrentMap<String, TypeDescriptor> TYPE_CACHE = new ConcurrentHashMap<>();
 	private final Class<?> targetClazz;
 
@@ -29,7 +29,7 @@ public class BladeConverter implements Converter {
 	 * cglib convert
 	 * @param value 源对象属性
 	 * @param target 目标对象属性类
-	 * @param fieldName 目标的field名，原为 set 方法名，BladeBeanCopier 里做了更改
+	 * @param fieldName 目标的field名，原为 set 方法名，BaseBeanCopier 里做了更改
 	 * @return {Object}
 	 */
 	@Override
@@ -43,10 +43,10 @@ public class BladeConverter implements Converter {
 			return value;
 		}
 		try {
-			TypeDescriptor targetDescriptor = BladeConverter.getTypeDescriptor(targetClazz, (String) fieldName);
+			TypeDescriptor targetDescriptor = DaggerConverter.getTypeDescriptor(targetClazz, (String) fieldName);
 			return ConvertUtil.convert(value, targetDescriptor);
 		} catch (Throwable e) {
-			log.warn("BladeConverter error", e);
+			log.warn("DaggerConverter error", e);
 			return null;
 		}
 	}

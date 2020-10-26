@@ -10,15 +10,15 @@ import org.springframework.util.StringValueResolver;
  *
  * @author L.cm
  */
-public class BladeConversionService extends ApplicationConversionService {
+public class DaggerConversionService extends ApplicationConversionService {
 	@Nullable
-	private static volatile BladeConversionService SHARED_INSTANCE;
+	private static volatile DaggerConversionService SHARED_INSTANCE;
 
-	public BladeConversionService() {
+	public DaggerConversionService() {
 		this(null);
 	}
 
-	public BladeConversionService(@Nullable StringValueResolver embeddedValueResolver) {
+	public DaggerConversionService(@Nullable StringValueResolver embeddedValueResolver) {
 		super(embeddedValueResolver);
 		super.addConverter(new EnumToStringConverter());
 		super.addConverter(new StringToEnumConverter());
@@ -28,19 +28,19 @@ public class BladeConversionService extends ApplicationConversionService {
 	 * Return a shared default application {@code ConversionService} instance, lazily
 	 * building it once needed.
 	 * <p>
-	 * Note: This method actually returns an {@link BladeConversionService}
+	 * Note: This method actually returns an {@link DaggerConversionService}
 	 * instance. However, the {@code ConversionService} signature has been preserved for
 	 * binary compatibility.
-	 * @return the shared {@code BladeConversionService} instance (never{@code null})
+	 * @return the shared {@code DaggerConversionService} instance (never{@code null})
 	 */
 	public static GenericConversionService getInstance() {
-		BladeConversionService sharedInstance = BladeConversionService.SHARED_INSTANCE;
+		DaggerConversionService sharedInstance = DaggerConversionService.SHARED_INSTANCE;
 		if (sharedInstance == null) {
-			synchronized (BladeConversionService.class) {
-				sharedInstance = BladeConversionService.SHARED_INSTANCE;
+			synchronized (DaggerConversionService.class) {
+				sharedInstance = DaggerConversionService.SHARED_INSTANCE;
 				if (sharedInstance == null) {
-					sharedInstance = new BladeConversionService();
-					BladeConversionService.SHARED_INSTANCE = sharedInstance;
+					sharedInstance = new DaggerConversionService();
+					DaggerConversionService.SHARED_INSTANCE = sharedInstance;
 				}
 			}
 		}

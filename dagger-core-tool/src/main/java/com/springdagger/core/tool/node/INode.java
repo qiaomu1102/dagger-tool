@@ -18,11 +18,6 @@ package com.springdagger.core.tool.node;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Blade.
- *
- * @author Chill
- */
 public interface INode extends Serializable {
 
 	/**
