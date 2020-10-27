@@ -20,6 +20,16 @@
             <artifactId>dagger-core-tool</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.springdagger</groupId>
+            <artifactId>dagger-core-swagger</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
