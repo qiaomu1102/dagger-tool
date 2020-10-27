@@ -16,10 +16,10 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "entity", description = "用户信息", discriminator = "aaaa", reference = "bbbbb")
 public class UserBody {
     @NotNull
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "姓名", notes = "aaaa", example = "qiaomu")
     private String name;
 
     @NotEmpty
-    @ApiModelProperty(value = "年龄")
+    @ApiModelProperty(value = "年龄", notes = "bbbbb", example = "222")
     private Integer age;
 }
