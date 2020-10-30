@@ -1,6 +1,8 @@
 package com.springdagger.core.mp.base;
 
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,6 +13,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -26,7 +29,7 @@ public class BaseEntity implements Serializable {
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "创建人")
-	private Long createUser;
+	private String createUser;
 
 	/**
 	 * 创建时间
@@ -34,14 +37,15 @@ public class BaseEntity implements Serializable {
 	@DateTimeFormat(pattern = DateUtil.PATTERN_DATETIME)
 	@JsonFormat(pattern = DateUtil.PATTERN_DATETIME)
 	@ApiModelProperty(value = "创建时间")
-	private Date createTime;
+	@TableField(value = "create_time", fill = FieldFill.INSERT)
+	private LocalDateTime createTime;
 
 	/**
 	 * 更新人
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "更新人")
-	private Long updateUser;
+	private String updateUser;
 
 	/**
 	 * 更新时间
@@ -49,7 +53,8 @@ public class BaseEntity implements Serializable {
 	@DateTimeFormat(pattern = DateUtil.PATTERN_DATETIME)
 	@JsonFormat(pattern = DateUtil.PATTERN_DATETIME)
 	@ApiModelProperty(value = "更新时间")
-	private Date updateTime;
+	@TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+	private LocalDateTime updateTime;
 
 	/**
 	 * 状态[1:正常]

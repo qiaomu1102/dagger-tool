@@ -1,5 +1,6 @@
 package com.springdagger.web;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description: TODO
  */
 @SpringBootApplication
+@MapperScan("com.springdagger.web.mapper")
 public class Application {
 
     public static void main(String[] args) {
