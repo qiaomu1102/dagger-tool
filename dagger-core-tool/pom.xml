@@ -8,6 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <description>核心工具包</description>
 
     <artifactId>dagger-core-tool</artifactId>
     <name>${project.artifactId}</name>

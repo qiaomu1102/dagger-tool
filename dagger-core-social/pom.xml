@@ -8,9 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <description>文件存储</description>
+    <description>第三方登陆</description>
 
-    <artifactId>dagger-core-oss</artifactId>
+    <artifactId>dagger-core-social</artifactId>
     <name>${project.artifactId}</name>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -21,17 +21,15 @@
             <artifactId>dagger-core-tool</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--QiNiu-->
+        <!-- 第三方登陆 -->
         <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-            <version>7.2.18</version>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.15.6</version>
         </dependency>
-        <!--alioss-->
         <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
         </dependency>
     </dependencies>
 

@@ -17,6 +17,7 @@
         <module>dagger-core-oss</module>
         <module>dagger-core-wx</module>
         <module>dagger-core-web</module>
+        <module>dagger-core-social</module>
     </modules>
 
     <properties>
