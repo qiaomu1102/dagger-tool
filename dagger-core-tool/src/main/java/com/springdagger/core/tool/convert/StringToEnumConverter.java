@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * 接收参数 同 jackson String -》 Enum 转换
  *
- * @author L.cm
  */
 @Slf4j
 public class StringToEnumConverter implements ConditionalGenericConverter {

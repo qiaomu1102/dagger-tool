@@ -14,6 +14,7 @@
         <module>dagger-web</module>
         <module>dagger-core-swagger</module>
         <module>dagger-core-mybatis</module>
+        <module>dagger-core-oss</module>
     </modules>
 
     <properties>

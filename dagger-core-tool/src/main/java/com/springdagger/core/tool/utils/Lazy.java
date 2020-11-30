@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 /**
  * Holder of a value that is computed lazy.
  *
- * @author L.cm
  */
 public class Lazy<T> implements Supplier<T>, Serializable {
 

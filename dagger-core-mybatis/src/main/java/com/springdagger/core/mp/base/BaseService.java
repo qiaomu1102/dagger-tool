@@ -5,12 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-/**
- * 基础业务接口
- *
- * @param <T>
- * @author Chill
- */
 public interface BaseService<T> extends IService<T> {
 
 	/**

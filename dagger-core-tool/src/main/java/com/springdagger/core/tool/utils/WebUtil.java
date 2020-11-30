@@ -36,7 +36,6 @@ import java.util.Enumeration;
 /**
  * Miscellaneous utilities for web applications.
  *
- * @author L.cm
  */
 @Slf4j
 public class WebUtil extends org.springframework.web.util.WebUtils {

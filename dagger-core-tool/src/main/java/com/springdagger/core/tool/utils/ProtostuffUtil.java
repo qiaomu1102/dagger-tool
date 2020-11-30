@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Protostuff 工具类
  *
- * @author L.cm
  */
 public class ProtostuffUtil {
 

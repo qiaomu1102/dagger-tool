@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * Xss配置类
  *
- * @author Chill
  */
 @Data
 @ConfigurationProperties("dagger.xss")

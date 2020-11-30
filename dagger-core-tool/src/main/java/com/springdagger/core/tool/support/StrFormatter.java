@@ -6,7 +6,6 @@ import com.springdagger.core.tool.utils.StringPool;
 /**
  * 字符串格式化
  *
- * @author Chill
  */
 public class StrFormatter {
 

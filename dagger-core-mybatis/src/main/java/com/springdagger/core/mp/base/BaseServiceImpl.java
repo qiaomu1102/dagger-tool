@@ -7,13 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-/**
- * 业务封装基础类
- *
- * @param <M> mapper
- * @param <T> model
- * @author Chill
- */
 @Validated
 public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements BaseService<T> {
 

@@ -27,7 +27,6 @@ import java.io.IOException;
 /**
  * 资源工具类
  *
- * @author L.cm
  */
 public class ResourceUtil extends org.springframework.util.ResourceUtils {
 	public static final String HTTP_REGEX = "^https?:.+$";

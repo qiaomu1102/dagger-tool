@@ -16,7 +16,6 @@ import javax.servlet.DispatcherType;
 /**
  * Xss配置类
  *
- * @author Chill
  */
 @Configuration
 @AllArgsConstructor

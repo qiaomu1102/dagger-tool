@@ -3,7 +3,6 @@ package com.springdagger.core.tool.constant;
 /**
  * 系统常量
  *
- * @author Chill
  */
 public interface DaggerConstant {
 

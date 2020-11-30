@@ -6,11 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 视图包装基类
- *
- * @author Chill
- */
 public abstract class BaseEntityWrapper<E, V> {
 
 	/**

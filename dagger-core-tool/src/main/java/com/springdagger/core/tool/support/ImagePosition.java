@@ -18,7 +18,6 @@ package com.springdagger.core.tool.support;
 /**
  * 图片操作类
  *
- * @author Chill
  */
 public class ImagePosition {
 

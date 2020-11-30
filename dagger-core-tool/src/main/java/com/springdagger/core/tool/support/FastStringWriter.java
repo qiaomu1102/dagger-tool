@@ -8,7 +8,6 @@ import java.io.Writer;
 /**
  * FastStringWriter
  *
- * @author L.cm
  */
 public class FastStringWriter extends Writer {
 	private StringBuilder builder;

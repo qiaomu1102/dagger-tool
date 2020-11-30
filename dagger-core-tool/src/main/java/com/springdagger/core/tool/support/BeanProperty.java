@@ -6,7 +6,6 @@ import lombok.Getter;
 /**
  * Bean属性
  *
- * @author Chill
  */
 @Getter
 @AllArgsConstructor

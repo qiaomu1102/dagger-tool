@@ -14,13 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-/**
- * 基础实体类
- *
- * @author Chill
- */
 @Data
 public class BaseEntity implements Serializable {
 

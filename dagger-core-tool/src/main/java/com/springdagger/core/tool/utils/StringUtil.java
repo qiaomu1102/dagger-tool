@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 /**
  * 继承自Spring util的工具类，减少jar依赖
  *
- * @author L.cm
  */
 public class StringUtil extends org.springframework.util.StringUtils {
 

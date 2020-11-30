@@ -18,7 +18,6 @@ package com.springdagger.core.tool.utils;
 /**
  * 静态 String 池
  *
- * @author L.cm
  */
 public interface StringPool {
 

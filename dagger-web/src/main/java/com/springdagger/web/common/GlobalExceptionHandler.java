@@ -119,7 +119,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public R handleError(CustomException e) {
+    public R<Object>  handleError(CustomException e) {
         log.error("业务异常", e);
         return R.fail(e.getEnumStatusCode().getCode(), e.getMessage());
     }
@@ -133,7 +133,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public R handleError(Throwable e) {
+    public R<Object>  handleError(Throwable e) {
         log.error("服务器异常", e);
         return R.fail(ResultCode.INTERNAL_SERVER_ERROR);
 //        return R.fail(ResultCode.INTERNAL_SERVER_ERROR, (Func.isEmpty(e.getMessage()) ? ResultCode.INTERNAL_SERVER_ERROR.getMessage() : e.getMessage()));

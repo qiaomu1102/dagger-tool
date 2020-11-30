@@ -21,7 +21,6 @@ import org.springframework.lang.Nullable;
 /**
  * 数字类型工具类
  *
- * @author L.cm
  */
 public class NumberUtil extends org.springframework.util.NumberUtils {
 

@@ -3,7 +3,6 @@ package com.springdagger.core.tool.utils;
 /**
  * char 常量池
  *
- * @author L.cm
  */
 public interface CharPool {
 

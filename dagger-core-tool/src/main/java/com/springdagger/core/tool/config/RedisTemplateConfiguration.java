@@ -23,7 +23,6 @@ import java.time.Duration;
 /**
  * RedisTemplate 配置
  *
- * @author Chill
  */
 @EnableCaching
 @Configuration

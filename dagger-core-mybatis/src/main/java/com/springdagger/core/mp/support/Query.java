@@ -7,8 +7,6 @@ import lombok.experimental.Accessors;
 
 /**
  * 分页工具
- *
- * @author Chill
  */
 @Data
 @Accessors(chain = true)

@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * Http请求工具类
  *
- * @author Chill
  */
 @Slf4j
 public class OkHttpUtil {
