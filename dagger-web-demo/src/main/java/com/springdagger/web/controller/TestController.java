@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.support.Kv;
 import com.springdagger.core.tool.utils.RedisUtil;
+import com.springdagger.core.web.annotation.CloseLimit;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.web.config.Const;
 import com.springdagger.web.entity.User;
@@ -50,6 +51,8 @@ public class TestController {
         return R.data(Kv.init().set("name", "qiaomu").set("age", 25));
     }
 
+    @IgnoreUserToken
+    @CloseLimit
     @GetMapping("/userInfo")
     @ApiOperationSupport(order = 3)
     @ApiOperation(value = "3.0获取用户信息")

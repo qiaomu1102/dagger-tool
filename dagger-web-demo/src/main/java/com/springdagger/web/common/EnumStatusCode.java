@@ -14,7 +14,6 @@ public enum EnumStatusCode {
     UNKOWN_EXCEPTION(999, "未知异常"),
     PARAM_EXCEPTION(998, "参数错误"),
     METHOD_UNSUPPORT_EXCEPTION(997, "方法不支持"),
-    CLOSE_LIMIT_EXCEPTION(996, "该服务接口关闭了"),
     TEST_CUSTOM_EXCEPTION(995, "测试自定义异常");
 
 

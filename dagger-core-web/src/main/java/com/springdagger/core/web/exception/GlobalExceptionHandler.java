@@ -124,6 +124,13 @@ public class GlobalExceptionHandler {
         return R.fail(e.getIResultCode());
     }
 
+    @ExceptionHandler(CloseLimitException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public R<Object>  handleError(CloseLimitException e) {
+        log.error("接口关闭异常", e);
+        return R.fail(e.getIResultCode());
+    }
+
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R<Object>  handleError(Throwable e) {

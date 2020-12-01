@@ -82,7 +82,12 @@ public enum ResultCode implements IResultCode {
 	/**
 	 * 登陆失效
 	 */
-	LOGIN_EXPIRED(996, "登陆失效");
+	LOGIN_EXPIRED(996, "登陆失效"),
+
+	/**
+	 * 消息不能读取
+	 */
+	REQ_FORBIDDEN(HttpServletResponse.SC_FORBIDDEN, "该接口已关闭, 禁止访问");
 
 	/**
 	 * code编码

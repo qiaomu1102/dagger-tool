@@ -7,6 +7,7 @@ import com.springdagger.core.web.config.CommonConstants;
 import com.springdagger.core.web.jwt.IJWTInfo;
 import com.springdagger.core.web.jwt.UserAuthUtil;
 import com.springdagger.core.web.model.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2020/4/10 18:37
  * @Description: 拦截登陆状态
  */
+@Slf4j
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 

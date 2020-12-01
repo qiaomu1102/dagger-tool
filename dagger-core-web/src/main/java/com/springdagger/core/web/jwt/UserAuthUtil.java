@@ -4,7 +4,6 @@ import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.ResultCode;
 import com.springdagger.core.web.config.PropertiesConfig;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.security.SignatureException;
