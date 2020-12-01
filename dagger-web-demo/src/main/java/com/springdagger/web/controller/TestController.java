@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.support.Kv;
 import com.springdagger.core.tool.utils.RedisUtil;
+import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.web.config.Const;
 import com.springdagger.web.entity.User;
 import com.springdagger.web.entity.UserBody;
@@ -32,6 +33,7 @@ public class TestController {
     @Resource
     RedisUtil redisUtil;
 
+    @IgnoreUserToken
     @GetMapping("/env")
     @ApiOperationSupport(order = 1)
     @ApiOperation(value = "1.0获取环境")

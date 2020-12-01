@@ -11,7 +11,7 @@
     <name>dagger-tool</name>
     <modules>
         <module>dagger-core-tool</module>
-        <module>dagger-web</module>
+        <module>dagger-web-demo</module>
         <module>dagger-core-swagger</module>
         <module>dagger-core-mybatis</module>
         <module>dagger-core-oss</module>
