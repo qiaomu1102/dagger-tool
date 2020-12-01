@@ -1,9 +1,9 @@
 package com.springdagger.core.tool.config;
 
-import lombok.AllArgsConstructor;
 import com.springdagger.core.tool.support.xss.XssFilter;
 import com.springdagger.core.tool.support.xss.XssProperties;
 import com.springdagger.core.tool.support.xss.XssUrlProperties;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

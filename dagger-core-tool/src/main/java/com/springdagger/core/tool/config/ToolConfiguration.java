@@ -1,6 +1,5 @@
 package com.springdagger.core.tool.config;
 
-
 import com.springdagger.core.tool.utils.SpringUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

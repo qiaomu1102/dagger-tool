@@ -18,6 +18,7 @@
         <module>dagger-core-wx</module>
         <module>dagger-core-web</module>
         <module>dagger-core-social</module>
+        <module>dagger-core-pay</module>
     </modules>
 
     <properties>

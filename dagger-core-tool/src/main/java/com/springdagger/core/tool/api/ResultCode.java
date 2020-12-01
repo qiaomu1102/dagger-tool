@@ -77,7 +77,12 @@ public enum ResultCode implements IResultCode {
 	 * 参数校验失败
 	 */
 	PARAM_VALID_ERROR(HttpServletResponse.SC_BAD_REQUEST, "参数校验失败"),
-	;
+
+
+	/**
+	 * 登陆失效
+	 */
+	LOGIN_EXPIRED(996, "登陆失效");
 
 	/**
 	 * code编码

@@ -1,21 +1,8 @@
-/**
- * Copyright (c) 2018-2028, DreamLu 卢春梦 (qq596392912@gmail.com).
- * <p>
- * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE 3.0;
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.gnu.org/licenses/lgpl.html
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.springdagger.core.tool.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeansException;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.Nullable;
@@ -1524,6 +1511,39 @@ public class Func {
 	 */
 	public static <T> T toBean(Map<String, Object> beanMap, Class<T> valueType) {
 		return BeanUtil.toBean(beanMap, valueType);
+	}
+
+	public static void main(String[] args) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("FromUserName", "aaaaa");
+		map.put("ToUserName", "bbbbbb");
+		map.put("MsgType", "ccccccccccc");
+		map.put("Content", "dddddddddd");
+		map.put("CreateTime", "wwwwwwwwww");
+		map.put("Event", "eeeeeeeeeee");
+		map.put("EventKey", "fffffffffff");
+
+
+
+//		WxPushModel wxPushModel = new WxPushModel();
+//		wxPushModel.setFromUserName("aaaaa");
+//		wxPushModel.setToUserName("bbbbb");
+//		wxPushModel.setMsgType("cccc");
+//		wxPushModel.setContent("dddd");
+//		wxPushModel.setCreateTime("eeee");
+//		wxPushModel.setEvent("ffff");
+//		wxPushModel.setEventKey("jjjj");
+
+
+//		BeanMap beanMap = BeanMap.create(wxPushModel);
+//		beanMap.putAll(map);
+//		map.putAll(beanMap);
+
+//		BeanMap beanMap = BeanMap.create(wxPushModel);
+//		beanMap.putAll(map);
+//
+//
+//		System.out.println(JSON.toJSONString(wxPushModel));
 	}
 
 }

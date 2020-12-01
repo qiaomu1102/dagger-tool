@@ -1,7 +1,10 @@
 package com.springdagger.core.tool.utils;
 
-import lombok.AllArgsConstructor;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +15,10 @@ import java.util.concurrent.TimeUnit;
  * Redis工具类
  *
  */
-@AllArgsConstructor
+@Component
 public class RedisUtil {
 
+	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
 	//=============================common============================
@@ -90,6 +94,24 @@ public class RedisUtil {
 	public Object get(String key) {
 		return key == null ? null : redisTemplate.opsForValue().get(key);
 	}
+
+	public String getString(String key) {
+		return key == null ? null : (String) redisTemplate.opsForValue().get(key);
+	}
+
+	public <T> T getEntity(String key, Class<T> clz) {
+		JSONObject jsonObject = key == null ? null : (JSONObject) redisTemplate.opsForValue().get(key);
+		if (jsonObject == null) return null;
+		return jsonObject.toJavaObject(clz);
+	}
+
+	public <T> List<T> getList(String key, Class<T> clz) {
+		JSONArray jsonObject = key == null ? null : (JSONArray) redisTemplate.opsForValue().get(key);
+		if (jsonObject == null) return null;
+		return jsonObject.toJavaList(clz);
+	}
+
+
 
 	/**
 	 * 普通缓存放入

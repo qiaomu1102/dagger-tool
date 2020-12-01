@@ -1,7 +1,7 @@
 package com.springdagger.core.tool.utils;
 
-import lombok.experimental.UtilityClass;
 import com.springdagger.core.tool.convert.DaggerConversionService;
+import lombok.experimental.UtilityClass;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.lang.Nullable;

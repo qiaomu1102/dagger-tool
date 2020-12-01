@@ -1,9 +1,9 @@
 package com.springdagger.core.tool.convert;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.extern.slf4j.Slf4j;
 import com.springdagger.core.tool.utils.ConvertUtil;
 import com.springdagger.core.tool.utils.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.lang.Nullable;

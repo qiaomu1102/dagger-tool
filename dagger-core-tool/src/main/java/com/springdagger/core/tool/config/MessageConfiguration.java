@@ -2,8 +2,8 @@ package com.springdagger.core.tool.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import com.springdagger.core.tool.utils.Charsets;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

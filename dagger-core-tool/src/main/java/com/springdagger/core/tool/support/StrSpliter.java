@@ -1,6 +1,5 @@
 package com.springdagger.core.tool.support;
 
-
 import com.springdagger.core.tool.utils.Func;
 import com.springdagger.core.tool.utils.StringPool;
 import com.springdagger.core.tool.utils.StringUtil;

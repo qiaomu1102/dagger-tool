@@ -1,13 +1,13 @@
 package com.springdagger.core.tool.api;
 
+import com.springdagger.core.tool.constant.DaggerConstant;
+import com.springdagger.core.tool.utils.ObjectUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import com.springdagger.core.tool.constant.DaggerConstant;
-import com.springdagger.core.tool.utils.ObjectUtil;
 import org.springframework.lang.Nullable;
 
 import javax.servlet.http.HttpServletResponse;

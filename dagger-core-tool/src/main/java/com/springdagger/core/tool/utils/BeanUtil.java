@@ -1,6 +1,5 @@
 package com.springdagger.core.tool.utils;
 
-
 import com.springdagger.core.tool.support.BaseBeanCopier;
 import com.springdagger.core.tool.support.BeanProperty;
 import org.springframework.beans.BeansException;

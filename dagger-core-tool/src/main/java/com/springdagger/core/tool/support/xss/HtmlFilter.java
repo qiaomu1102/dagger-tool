@@ -1,6 +1,5 @@
 package com.springdagger.core.tool.support.xss;
 
-
 import com.springdagger.core.tool.utils.StringPool;
 
 import java.util.*;
