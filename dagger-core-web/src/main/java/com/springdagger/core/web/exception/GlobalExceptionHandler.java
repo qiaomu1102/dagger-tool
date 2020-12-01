@@ -1,5 +1,6 @@
 package com.springdagger.core.web.exception;
 
+import com.springdagger.core.tool.api.BaseException;
 import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.api.ResultCode;
@@ -117,17 +118,10 @@ public class GlobalExceptionHandler {
         return R.fail(ResultCode.MEDIA_TYPE_NOT_SUPPORTED, e.getMessage());
     }
 
-    @ExceptionHandler(BizException.class)
+    @ExceptionHandler(BaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public R<Object>  handleError(BizException e) {
+    public R<Object>  handleError(BaseException e) {
         log.error("业务异常", e);
-        return R.fail(e.getIResultCode());
-    }
-
-    @ExceptionHandler(CloseLimitException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public R<Object>  handleError(CloseLimitException e) {
-        log.error("接口关闭异常", e);
         return R.fail(e.getIResultCode());
     }
 

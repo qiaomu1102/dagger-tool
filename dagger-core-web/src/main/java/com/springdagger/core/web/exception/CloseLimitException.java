@@ -1,8 +1,7 @@
 package com.springdagger.core.web.exception;
 
+import com.springdagger.core.tool.api.BaseException;
 import com.springdagger.core.tool.api.IResultCode;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @package: com.qiaomu.common.exception
@@ -10,21 +9,13 @@ import lombok.EqualsAndHashCode;
  * @date: 2019/8/28 16:50
  * @Description: TODO
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class CloseLimitException extends RuntimeException {
-
-    private IResultCode iResultCode;
-    private Object resultData;
+public class CloseLimitException extends BaseException {
 
     public CloseLimitException(IResultCode iResultCode){
-        super(iResultCode.getMessage());
-        this.iResultCode = iResultCode;
-        this.resultData = null;
+        super(iResultCode);
     }
 
     public CloseLimitException(IResultCode iResultCode, Object resultData){
-        this.iResultCode = iResultCode;
-        this.resultData = resultData;
+        super(iResultCode, resultData);
     }
 }
