@@ -1,7 +1,6 @@
 package com.springdagger.core.web.exception;
 
 import com.springdagger.core.tool.api.BaseException;
-import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.api.ResultCode;
 import lombok.extern.slf4j.Slf4j;

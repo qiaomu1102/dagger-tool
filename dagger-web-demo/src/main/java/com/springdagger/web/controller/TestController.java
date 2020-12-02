@@ -39,7 +39,7 @@ public class TestController {
     @ApiOperationSupport(order = 1)
     @ApiOperation(value = "1.0获取环境")
     public R<Boolean> getEnv() {
-//        redisUtil.set("test:redis:", "乔木", 10);
+        redisUtil.set("test:redis:", "乔木", 10);
         return R.data(Const.IS_PROD);
     }
 
@@ -47,17 +47,17 @@ public class TestController {
     @ApiOperationSupport(order = 2)
     @ApiOperation(value = "2.0path路径参数")
     public R<Map<String, Object>> getMap(@PathVariable(value = "id", required = false) String id) {
-
         return R.data(Kv.init().set("name", "qiaomu").set("age", 25));
     }
 
     @IgnoreUserToken
-    @CloseLimit
     @GetMapping("/userInfo")
     @ApiOperationSupport(order = 3)
     @ApiOperation(value = "3.0获取用户信息")
     public R<User> userInfo() {
         User user = new User("name", 25);
+        String name = (String) redisUtil.get("test:redis:");
+        user.setName(name);
         return R.data(user);
     }
 
