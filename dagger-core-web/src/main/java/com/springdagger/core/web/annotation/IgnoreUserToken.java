@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @Description: TODO
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={ElementType.METHOD})
+@Target(value={ElementType.METHOD, ElementType.TYPE})
 public @interface IgnoreUserToken {
 
 }

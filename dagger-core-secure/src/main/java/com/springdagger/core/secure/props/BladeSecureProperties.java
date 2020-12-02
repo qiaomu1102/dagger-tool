@@ -1,0 +1,22 @@
+package com.springdagger.core.secure.props;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * secure放行额外配置
+ *
+ * @author Chill
+ */
+@Data
+@ConfigurationProperties("dagger.secure")
+public class BladeSecureProperties {
+
+	private final List<ClientSecure> client = new ArrayList<>();
+
+	private final List<String> skipUrl = new ArrayList<>();
+
+}
