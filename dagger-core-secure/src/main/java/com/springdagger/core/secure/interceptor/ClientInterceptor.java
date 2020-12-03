@@ -1,7 +1,7 @@
 package com.springdagger.core.secure.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.springdagger.core.secure.BladeUser;
+import com.springdagger.core.secure.DaggerUser;
 import com.springdagger.core.secure.utils.SecureUtil;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.api.ResultCode;
@@ -31,7 +31,7 @@ public class ClientInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		BladeUser user = SecureUtil.getUser();
+		DaggerUser user = SecureUtil.getUser();
 		if (user != null && StringUtil.equals(clientId, SecureUtil.getClientIdFromHeader()) && StringUtil.equals(clientId, user.getClientId())) {
 			return true;
 		} else {

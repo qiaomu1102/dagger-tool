@@ -15,6 +15,11 @@ public class BaseException extends RuntimeException {
     private IResultCode iResultCode;
     private Object resultData;
 
+    public BaseException(String message){
+        super(message);
+        iResultCode = ResultCode.FAILURE;
+    }
+
     public BaseException(IResultCode iResultCode){
         super(iResultCode.getMessage());
         this.iResultCode = iResultCode;

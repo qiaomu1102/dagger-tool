@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Chill
  */
 @Data
-public class BladeUser implements Serializable {
+public class DaggerUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	/**
@@ -25,11 +25,6 @@ public class BladeUser implements Serializable {
 	 */
 	@ApiModelProperty(hidden = true)
 	private Long userId;
-	/**
-	 * 租户ID
-	 */
-	@ApiModelProperty(hidden = true)
-	private String tenantId;
 	/**
 	 * 昵称
 	 */

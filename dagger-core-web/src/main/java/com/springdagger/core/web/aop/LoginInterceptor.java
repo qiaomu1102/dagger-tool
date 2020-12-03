@@ -2,6 +2,7 @@ package com.springdagger.core.web.aop;
 
 import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.ResultCode;
+import com.springdagger.core.tool.utils.ClassUtil;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.core.web.config.CommonConstants;
 import com.springdagger.core.web.jwt.IJWTInfo;
@@ -33,12 +34,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("LoginInterceptor: ===================================");
         if(!(handler instanceof HandlerMethod)){
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         // 配置该注解，说明不进行用户拦截
-        IgnoreUserToken annotation = handlerMethod.getMethodAnnotation(IgnoreUserToken.class);
+        IgnoreUserToken annotation = ClassUtil.getAnnotation(handlerMethod, IgnoreUserToken.class);
         if (annotation != null) {
             return true;
         }

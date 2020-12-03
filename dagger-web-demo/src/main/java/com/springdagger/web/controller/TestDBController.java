@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.utils.Func;
+import com.springdagger.core.web.annotation.CloseLimit;
 import com.springdagger.web.entity.UcUser;
 import com.springdagger.web.entity.UcUserBody;
 import com.springdagger.web.service.UcUserService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/testDB")
 @Api(tags = "2.1测试DB")
 public class TestDBController {
+
 
     @Autowired
     UcUserService ucUserService;

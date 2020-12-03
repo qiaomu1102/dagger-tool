@@ -2,6 +2,7 @@ package com.springdagger.core.web.exception;
 
 import com.springdagger.core.tool.api.BaseException;
 import com.springdagger.core.tool.api.IResultCode;
+import com.springdagger.core.tool.api.ResultCode;
 
 /**
  * @package: com.qiaomu.common.exception
@@ -10,6 +11,10 @@ import com.springdagger.core.tool.api.IResultCode;
  * @Description: TODO
  */
 public class CloseLimitException extends BaseException {
+
+    public CloseLimitException(String message){
+        super(message);
+    }
 
     public CloseLimitException(IResultCode iResultCode){
         super(iResultCode);

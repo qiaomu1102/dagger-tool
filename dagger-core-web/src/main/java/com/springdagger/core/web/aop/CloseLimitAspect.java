@@ -8,6 +8,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -20,15 +22,17 @@ import java.util.Objects;
  * @Description: TODO
  */
 @Slf4j
+@Component
 @Aspect
-@Configuration
+@Order(1)
 public class CloseLimitAspect {
 
     @Before(
+            "@annotation(limit)&&" +
             "(@within(org.springframework.stereotype.Controller) ||" +
-            "@within(org.springframework.web.bind.annotation.RestController))&&" +
-             "@annotation(limit) ")
-    public void requestLimit(JoinPoint joinpoint, CloseLimit limit) {
+            "@within(org.springframework.web.bind.annotation.RestController))"
+             )
+    public void requestLimit(CloseLimit limit) {
         log.info("requestLimit: ===================================");
         ServletRequestAttributes attributes = Objects.requireNonNull((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         HttpServletRequest request = attributes.getRequest();

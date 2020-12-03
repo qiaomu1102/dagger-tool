@@ -6,12 +6,10 @@ import org.springframework.core.annotation.Order;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Documented
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public @interface CloseLimit {
-
-    boolean close() default true;
 
     String explain() default "该服务已被关闭！";
 

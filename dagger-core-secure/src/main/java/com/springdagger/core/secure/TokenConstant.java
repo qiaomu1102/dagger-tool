@@ -9,7 +9,7 @@ public interface TokenConstant {
 
 	String SIGN_KEY = "Blade";
 	String AVATAR = "avatar";
-	String HEADER = "blade-auth";
+	String HEADER = "token";
 	String BEARER = "bearer";
 	String ACCESS_TOKEN = "access_token";
 	String REFRESH_TOKEN = "refresh_token";
@@ -20,7 +20,6 @@ public interface TokenConstant {
 	String ROLE_ID = "role_id";
 	String USER_NAME = "user_name";
 	String ROLE_NAME = "role_name";
-	String TENANT_ID = "tenant_id";
 	String OAUTH_ID = "oauth_id";
 	String CLIENT_ID = "client_id";
 	String LICENSE = "license";

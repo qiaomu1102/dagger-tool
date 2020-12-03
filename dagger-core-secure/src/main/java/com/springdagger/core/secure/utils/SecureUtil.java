@@ -1,6 +1,6 @@
 package com.springdagger.core.secure.utils;
 
-import com.springdagger.core.secure.BladeUser;
+import com.springdagger.core.secure.DaggerUser;
 import com.springdagger.core.secure.TokenConstant;
 import com.springdagger.core.secure.TokenInfo;
 import com.springdagger.core.secure.constant.SecureConstant;
@@ -35,7 +35,6 @@ public class SecureUtil {
 	private final static String ROLE_ID = TokenConstant.ROLE_ID;
 	private final static String USER_NAME = TokenConstant.USER_NAME;
 	private final static String ROLE_NAME = TokenConstant.ROLE_NAME;
-	private final static String TENANT_ID = TokenConstant.TENANT_ID;
 	private final static String CLIENT_ID = TokenConstant.CLIENT_ID;
 	private final static Integer AUTH_LENGTH = TokenConstant.AUTH_LENGTH;
 	private static String BASE64_SECURITY = Base64.getEncoder().encodeToString(TokenConstant.SIGN_KEY.getBytes(Charsets.UTF_8));
@@ -51,7 +50,7 @@ public class SecureUtil {
 	 *
 	 * @return BladeUser
 	 */
-	public static BladeUser getUser() {
+	public static DaggerUser getUser() {
 		HttpServletRequest request = WebUtil.getRequest();
 		if (request == null) {
 			return null;
@@ -65,7 +64,7 @@ public class SecureUtil {
 				request.setAttribute(BLADE_USER_REQUEST_ATTR, bladeUser);
 			}
 		}
-		return (BladeUser) bladeUser;
+		return (DaggerUser) bladeUser;
 	}
 
 	/**
@@ -74,27 +73,25 @@ public class SecureUtil {
 	 * @param request request
 	 * @return BladeUser
 	 */
-	public static BladeUser getUser(HttpServletRequest request) {
+	public static DaggerUser getUser(HttpServletRequest request) {
 		Claims claims = getClaims(request);
 		if (claims == null) {
 			return null;
 		}
 		String clientId = Func.toStr(claims.get(SecureUtil.CLIENT_ID));
 		Long userId = Func.toLong(claims.get(SecureUtil.USER_ID));
-		String tenantId = Func.toStr(claims.get(SecureUtil.TENANT_ID));
 		String roleId = Func.toStr(claims.get(SecureUtil.ROLE_ID));
 		String account = Func.toStr(claims.get(SecureUtil.ACCOUNT));
 		String roleName = Func.toStr(claims.get(SecureUtil.ROLE_NAME));
 		String userName = Func.toStr(claims.get(SecureUtil.USER_NAME));
-		BladeUser bladeUser = new BladeUser();
-		bladeUser.setClientId(clientId);
-		bladeUser.setUserId(userId);
-		bladeUser.setTenantId(tenantId);
-		bladeUser.setAccount(account);
-		bladeUser.setRoleId(roleId);
-		bladeUser.setRoleName(roleName);
-		bladeUser.setUserName(userName);
-		return bladeUser;
+		DaggerUser daggerUser = new DaggerUser();
+		daggerUser.setClientId(clientId);
+		daggerUser.setUserId(userId);
+		daggerUser.setAccount(account);
+		daggerUser.setRoleId(roleId);
+		daggerUser.setRoleName(roleName);
+		daggerUser.setUserName(userName);
+		return daggerUser;
 	}
 
 	/**
@@ -112,7 +109,7 @@ public class SecureUtil {
 	 * @return userId
 	 */
 	public static Long getUserId() {
-		BladeUser user = getUser();
+		DaggerUser user = getUser();
 		return (null == user) ? -1 : user.getUserId();
 	}
 
@@ -123,7 +120,7 @@ public class SecureUtil {
 	 * @return userId
 	 */
 	public static Long getUserId(HttpServletRequest request) {
-		BladeUser user = getUser(request);
+		DaggerUser user = getUser(request);
 		return (null == user) ? -1 : user.getUserId();
 	}
 
@@ -133,7 +130,7 @@ public class SecureUtil {
 	 * @return userAccount
 	 */
 	public static String getUserAccount() {
-		BladeUser user = getUser();
+		DaggerUser user = getUser();
 		return (null == user) ? StringPool.EMPTY : user.getAccount();
 	}
 
@@ -144,7 +141,7 @@ public class SecureUtil {
 	 * @return userAccount
 	 */
 	public static String getUserAccount(HttpServletRequest request) {
-		BladeUser user = getUser(request);
+		DaggerUser user = getUser(request);
 		return (null == user) ? StringPool.EMPTY : user.getAccount();
 	}
 
@@ -154,7 +151,7 @@ public class SecureUtil {
 	 * @return userName
 	 */
 	public static String getUserName() {
-		BladeUser user = getUser();
+		DaggerUser user = getUser();
 		return (null == user) ? StringPool.EMPTY : user.getUserName();
 	}
 
@@ -165,7 +162,7 @@ public class SecureUtil {
 	 * @return userName
 	 */
 	public static String getUserName(HttpServletRequest request) {
-		BladeUser user = getUser(request);
+		DaggerUser user = getUser(request);
 		return (null == user) ? StringPool.EMPTY : user.getUserName();
 	}
 
@@ -175,7 +172,7 @@ public class SecureUtil {
 	 * @return userName
 	 */
 	public static String getUserRole() {
-		BladeUser user = getUser();
+		DaggerUser user = getUser();
 		return (null == user) ? StringPool.EMPTY : user.getRoleName();
 	}
 
@@ -186,29 +183,8 @@ public class SecureUtil {
 	 * @return userName
 	 */
 	public static String getUserRole(HttpServletRequest request) {
-		BladeUser user = getUser(request);
+		DaggerUser user = getUser(request);
 		return (null == user) ? StringPool.EMPTY : user.getRoleName();
-	}
-
-	/**
-	 * 获取租户ID
-	 *
-	 * @return tenantId
-	 */
-	public static String getTenantId() {
-		BladeUser user = getUser();
-		return (null == user) ? StringPool.EMPTY : user.getTenantId();
-	}
-
-	/**
-	 * 获取租户ID
-	 *
-	 * @param request request
-	 * @return tenantId
-	 */
-	public static String getTenantId(HttpServletRequest request) {
-		BladeUser user = getUser(request);
-		return (null == user) ? StringPool.EMPTY : user.getTenantId();
 	}
 
 	/**
@@ -217,7 +193,7 @@ public class SecureUtil {
 	 * @return tenantId
 	 */
 	public static String getClientId() {
-		BladeUser user = getUser();
+		DaggerUser user = getUser();
 		return (null == user) ? StringPool.EMPTY : user.getClientId();
 	}
 
@@ -228,7 +204,7 @@ public class SecureUtil {
 	 * @return tenantId
 	 */
 	public static String getClientId(HttpServletRequest request) {
-		BladeUser user = getUser(request);
+		DaggerUser user = getUser(request);
 		return (null == user) ? StringPool.EMPTY : user.getClientId();
 	}
 
