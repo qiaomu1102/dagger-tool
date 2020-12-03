@@ -12,12 +12,11 @@ import lombok.EqualsAndHashCode;
 @Data
 public class BaseException extends RuntimeException {
 
-    private IResultCode iResultCode;
-    private Object resultData;
+    public IResultCode iResultCode;
+    public Object resultData;
 
     public BaseException(String message){
         super(message);
-        iResultCode = ResultCode.FAILURE;
     }
 
     public BaseException(IResultCode iResultCode){

@@ -1,6 +1,6 @@
 package com.springdagger.core.web.config;
 
-import com.springdagger.core.web.aop.LoginInterceptor;
+import com.springdagger.core.web.interceptor.SecureInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -18,11 +18,14 @@ import java.util.List;
  * @Description: TODO
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfiguration implements WebMvcConfigurer {
     @Resource
-    private LoginInterceptor loginInterceptor;
+    private SecureInterceptor secureInterceptor;
 //    @Resource
 //    private CurrentUserMethodArg currentUserMethodArg;
+
+    @Resource
+    private SecureConfig secureConfig;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -31,12 +34,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor)
-                .excludePathPatterns("/swagger-resources")
-                .excludePathPatterns("/webjars/**")
-                .excludePathPatterns("/v2/**")
-                .excludePathPatterns("/doc.html")
-                .excludePathPatterns("/service-worker.js");
+        if (secureConfig.isEnable()) {
+            registry.addInterceptor(secureInterceptor)
+                    .excludePathPatterns(secureConfig.getDefaultExcludePatterns())
+                    .excludePathPatterns(secureConfig.getExcludePatterns())
+                    .excludePathPatterns(secureConfig.getSkipUrls());
+        }
     }
 
     @Override

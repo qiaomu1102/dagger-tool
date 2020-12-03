@@ -3,6 +3,7 @@ package com.springdagger.core.web.jwt;
 import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.ResultCode;
 import com.springdagger.core.web.config.PropertiesConfig;
+import com.springdagger.core.web.exception.SecureException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,11 +19,11 @@ public class UserAuthUtil {
         try {
             return JWTHelper.getInfoFromToken(token, PropertiesConfig.JWT_PUBLIC_KEY);
         }catch (ExpiredJwtException ex){
-            throw new BizException(ResultCode.LOGIN_EXPIRED, "User token expired!");
+            throw new SecureException(ResultCode.LOGIN_EXPIRED, "User token expired!");
         }catch (SignatureException ex){
-            throw new BizException(ResultCode.LOGIN_EXPIRED, "User token signature error!");
+            throw new SecureException(ResultCode.LOGIN_EXPIRED, "User token signature error!");
         }catch (IllegalArgumentException ex){
-            throw new BizException(ResultCode.LOGIN_EXPIRED, "User token is null or empty!");
+            throw new SecureException(ResultCode.LOGIN_EXPIRED, "User token is null or empty!");
         }
     }
 }
