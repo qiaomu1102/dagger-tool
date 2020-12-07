@@ -8,11 +8,20 @@ package com.springdagger.core.tool.api;
  */
 public class BizException extends BaseException {
 
-    public BizException(IResultCode iResultCode){
+    public BizException() {
+        iResultCode = ResultCode.FAILURE;
+    }
+
+    public BizException(String message) {
+        super(message);
+        iResultCode = ResultCode.FAILURE;
+    }
+
+    public BizException(IResultCode iResultCode) {
         super(iResultCode);
     }
 
-    public BizException(IResultCode iResultCode, Object resultData){
+    public BizException(IResultCode iResultCode, Object resultData) {
         super(iResultCode, resultData);
     }
 }

@@ -6,6 +6,7 @@ import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.support.Kv;
 import com.springdagger.core.tool.utils.RedisUtil;
 import com.springdagger.core.web.annotation.CloseLimit;
+import com.springdagger.core.web.annotation.EncryptParameter;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.web.config.Const;
 import com.springdagger.web.entity.User;
@@ -26,7 +27,6 @@ import java.util.Map;
  * @Description: TODO
  */
 @Slf4j
-@IgnoreUserToken
 @RestController
 @RequestMapping("/test")
 @Api(tags = "1.0测试类")
@@ -42,6 +42,14 @@ public class TestController {
     public R<Boolean> getEnv() {
 //        redisUtil.set("test:redis:", "乔木", 10);
         return R.data(Const.IS_PROD);
+    }
+
+    @GetMapping("/test")
+    @ApiOperationSupport(order = 1)
+    @ApiOperation(value = "1.0获取环境")
+    public R<String> getTest() {
+//        redisUtil.set("test:redis:", "乔木", 10);
+        return R.data("aaaaaaaaaaaaa");
     }
 
     @GetMapping("/map/{id}")
@@ -62,14 +70,18 @@ public class TestController {
         return R.data(user);
     }
 
+    @EncryptParameter()
     @ApiOperationSupport(order = 4)
     @ApiOperation(value = "4.0获取url")
     @GetMapping(value = "/htbb_url", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public R<Object> htbbUrl(@ApiParam(value = "name", required = true) String name,
                              @ApiParam(value = "age", name = "bbbb") Integer age) {
-        return R.data(Const.HTBB_URL);
+        log.info("name=====" + name);
+        User user = new User("name", 25);
+        return R.data(user);
     }
 
+    @EncryptParameter
     @PostMapping("/save")
     @ApiOperationSupport(order = 5)
     @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")

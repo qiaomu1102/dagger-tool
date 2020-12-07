@@ -19,7 +19,7 @@ public class UserBody {
     @ApiModelProperty(value = "姓名", notes = "aaaa", example = "qiaomu")
     private String name;
 
-    @NotEmpty
+//    @NotEmpty
     @ApiModelProperty(value = "年龄", notes = "bbbbb", example = "222")
     private Integer age;
 }

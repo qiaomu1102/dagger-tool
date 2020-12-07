@@ -3,9 +3,9 @@ package com.springdagger.core.web.aop;
 import com.alibaba.fastjson.JSON;
 import com.springdagger.core.tool.utils.BeanUtil;
 import com.springdagger.core.tool.utils.ClassUtil;
-import com.springdagger.core.tool.utils.StringUtil;
 import com.springdagger.core.tool.utils.WebUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +16,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +25,6 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @package: com.qiaomu.common.annotation.aop
@@ -40,137 +38,103 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @ConditionalOnProperty(prefix = "webLog",name = "enable",havingValue = "true")
 public class RequestLogAspect {
 
-	/**
-	 * AOP 环切 控制器 R 返回值
-	 *
-	 * @param point JoinPoint
-	 * @return Object
-	 * @throws Throwable 异常
-	 */
 	@Around(
 			"execution(!static com.springdagger.core.tool.api.R *(..)) && " +
 					"(@within(org.springframework.stereotype.Controller) || " +
 					"@within(org.springframework.web.bind.annotation.RestController))"
 	)
 	public Object aroundApi(ProceedingJoinPoint point) throws Throwable {
-		MethodSignature ms = (MethodSignature) point.getSignature();
-		Method method = ms.getMethod();
-		Object[] args = point.getArgs();
-		// 请求参数处理
-		final Map<String, Object> paraMap = new HashMap<>(16);
-		for (int i = 0; i < args.length; i++) {
-			// 读取方法参数
-			MethodParameter methodParam = ClassUtil.getMethodParameter(method, i);
-			// PathVariable 参数跳过
-			PathVariable pathVariable = methodParam.getParameterAnnotation(PathVariable.class);
-			if (pathVariable != null) {
-				continue;
-			}
-			RequestBody requestBody = methodParam.getParameterAnnotation(RequestBody.class);
-			String parameterName = methodParam.getParameterName();
-			Object value = args[i];
-			// 如果是body的json则是对象
-			if (requestBody != null && value != null) {
-				paraMap.putAll(BeanUtil.toMap(value));
-				continue;
-			}
-			// 处理 List
-			if (value instanceof List) {
-				value = ((List) value).get(0);
-			}
-			// 处理 参数
-			if (value instanceof HttpServletRequest) {
-				paraMap.putAll(((HttpServletRequest) value).getParameterMap());
-			} else if (value instanceof WebRequest) {
-				paraMap.putAll(((WebRequest) value).getParameterMap());
-			} else if (value instanceof MultipartFile) {
-				MultipartFile multipartFile = (MultipartFile) value;
-				String name = multipartFile.getName();
-				String fileName = multipartFile.getOriginalFilename();
-				paraMap.put(name, fileName);
-			} else if (value instanceof HttpServletResponse) {
-			} else if (value instanceof InputStream) {
-			} else if (value instanceof InputStreamSource) {
-			} else if (value instanceof List) {
-				List<?> list = (List<?>) value;
-				AtomicBoolean isSkip = new AtomicBoolean(false);
-				for (Object o : list) {
-					if ("StandardMultipartFile".equalsIgnoreCase(o.getClass().getSimpleName())) {
-						isSkip.set(true);
-						break;
-					}
-				}
-				if (isSkip.get()) {
-					paraMap.put(parameterName, "此参数不能序列化为json");
-					continue;
-				}
-			} else {
-				// 参数名
-				RequestParam requestParam = methodParam.getParameterAnnotation(RequestParam.class);
-				String paraName;
-				if (requestParam != null && StringUtil.isNotBlank(requestParam.value())) {
-					paraName = requestParam.value();
-				} else {
-					paraName = methodParam.getParameterName();
-				}
-				paraMap.put(paraName, value);
-			}
-		}
+		log.info("RequestLogAspect============aroundApi=====================");
+
+		Map<String, Object> paraMap = getParams(point);
+
 		HttpServletRequest request = WebUtil.getRequest();
 		String requestURI = Objects.requireNonNull(request).getRequestURI();
 		String requestMethod = request.getMethod();
 
 		// 构建成一条长 日志，避免并发下日志错乱
-		StringBuilder beforeReqLog = new StringBuilder(300);
-		// 日志参数
-		List<Object> beforeReqArgs = new ArrayList<>();
-		beforeReqLog.append("\n\n================  Request Start  ================\n");
-		// 打印路由
-		beforeReqLog.append("===> {}: {}");
-		beforeReqArgs.add(requestMethod);
-		beforeReqArgs.add(requestURI);
+		StringBuilder reqLog = new StringBuilder(500);
+		List<Object> reqArgs = new ArrayList<>();
+		reqLog.append("\n\n================  Request Start  ================\n");
+		reqLog.append("===> {}: {}");
+		reqArgs.add(requestMethod);
+		reqArgs.add(requestURI);
 		// 请求参数
 		if (paraMap.isEmpty()) {
-			beforeReqLog.append("\n");
+			reqLog.append("\n");
 		} else {
-			beforeReqLog.append("\nParameters: {}\n");
-			beforeReqArgs.add(JSON.toJSONString(paraMap));
+			reqLog.append("\nParameters: {}\n");
+			reqArgs.add(JSON.toJSONString(paraMap));
 		}
-		beforeReqLog.append("token:  {}\n");
-		beforeReqArgs.add(request.getHeader("token"));
+		reqLog.append("token:  {}\n");
+		reqArgs.add(request.getHeader("token"));
 		// 打印请求头
 //		Enumeration<String> headers = request.getHeaderNames();
 //		while (headers.hasMoreElements()) {
 //			String headerName = headers.nextElement();
 //			String headerValue = request.getHeader(headerName);
-//			beforeReqLog.append("===Headers===  {} : {}\n");
-//			beforeReqArgs.add(headerName);
-//			beforeReqArgs.add(headerValue);
+//			reqLog.append("===Headers===  {} : {}\n");
+//			reqArgs.add(headerName);
+//			reqArgs.add(headerValue);
 //		}
-		beforeReqLog.append("================  Request End   ================\n");
 		// 打印执行时间
 		long startNs = System.nanoTime();
-		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
+		log.info(reqLog.toString(), reqArgs.toArray());
+
 		// aop 执行后的日志
-		StringBuilder afterReqLog = new StringBuilder(200);
 		// 日志参数
-		List<Object> afterReqArgs = new ArrayList<>();
-		afterReqLog.append("\n\n================  Response Start  ================\n");
 		try {
 			Object result = point.proceed();
 			// 打印返回结构体
-			afterReqLog.append("===Result===  {}\n");
-			afterReqArgs.add(JSON.toJSONString(result));
+			reqLog.append("===Result===  {}\n");
+			reqArgs.add(JSON.toJSONString(result));
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			afterReqLog.append("<=== {}: {} ({} ms)\n");
-			afterReqArgs.add(requestMethod);
-			afterReqArgs.add(requestURI);
-			afterReqArgs.add(tookMs);
-			afterReqLog.append("================  Response End   ================\n");
-			log.info(afterReqLog.toString(), afterReqArgs.toArray());
+			reqLog.append("<=== {}: {} ({} ms)\n");
+			reqArgs.add(requestMethod);
+			reqArgs.add(requestURI);
+			reqArgs.add(tookMs);
+			log.info(reqLog.toString(), reqArgs.toArray());
+			reqLog.append("================  Response End   ================\n");
 		}
+	}
+
+	private Map<String, Object> getParams(JoinPoint point) {
+		MethodSignature ms = (MethodSignature) point.getSignature();
+		Method method = ms.getMethod();
+		List<Object> list = Arrays.asList(point.getArgs());
+		Map<String, Object> paramMap = new HashMap<>(16);
+		for (int i = 0; i < list.size(); i++) {
+			Object value = list.get(i);
+			// 读取方法参数
+			MethodParameter methodParam = ClassUtil.getMethodParameter(method, i);
+			PathVariable pathVariable = methodParam.getParameterAnnotation(PathVariable.class);
+			if (pathVariable != null) {
+				continue;
+			}
+			RequestBody requestBody = methodParam.getParameterAnnotation(RequestBody.class);
+			if (requestBody != null && value != null) {
+				paramMap.putAll(BeanUtil.toMap(value));
+				continue;
+			}
+
+			if (value instanceof MultipartFile) {
+				MultipartFile multipartFile = (MultipartFile) value;
+				String name = multipartFile.getName();
+				String fileName = multipartFile.getOriginalFilename();
+				paramMap.put(name, fileName);
+			} else if (value instanceof HttpServletRequest) {
+			} else if (value instanceof WebRequest) {
+			} else if (value instanceof HttpServletResponse) {
+			} else if (value instanceof InputStreamSource) {
+			} else if (value instanceof InputStream) {
+			} else {
+				String parameterName = methodParam.getParameterName();
+				paramMap.put(parameterName, list.get(i));
+			}
+		}
+		return paramMap;
 	}
 
 }

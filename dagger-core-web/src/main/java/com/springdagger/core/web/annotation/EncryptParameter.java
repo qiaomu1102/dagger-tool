@@ -1,5 +1,6 @@
 package com.springdagger.core.web.annotation;
 
+import com.springdagger.core.web.EncryptTypeEnum;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
@@ -15,16 +16,26 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Order
-public @interface MD5SecurityParameter {
+public @interface EncryptParameter {
 
     /**
-     * 是否加密
+     * 加密方式
      */
-    boolean encrypt() default true;
+    EncryptTypeEnum encryptType() default EncryptTypeEnum.MD5;
 
     /**
-     * 是否解密
+     * 加密盐值
      */
-    boolean decrypt() default true;
+    String signKey() default "daggerEncryptKey";
+
+    /**
+     * 输入的参数是否加密
+     */
+    boolean inDecode() default true;
+
+    /**
+     * 输出的参数是否加密
+     */
+    boolean outEncode() default true;
 
 }

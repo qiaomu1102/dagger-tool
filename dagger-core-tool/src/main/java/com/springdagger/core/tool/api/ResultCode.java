@@ -89,6 +89,11 @@ public enum ResultCode implements IResultCode {
 	 */
 	REQ_FORBIDDEN(HttpServletResponse.SC_FORBIDDEN, "该接口已关闭, 禁止访问");
 
+//	/**
+//	 * 解密异常
+//	 */
+//	REQ_FORBIDDEN(HttpServletResponse.SC_FORBIDDEN, "该接口已关闭, 禁止访问");
+
 	/**
 	 * code编码
 	 */
