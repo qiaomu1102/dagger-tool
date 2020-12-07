@@ -86,17 +86,15 @@ public class RequestLogAspect {
 		try {
 			Object result = point.proceed();
 			// 打印返回结构体
-			reqLog.append("===Result===  {}\n");
+			reqLog.append("ResponseBody:  {}\n");
 			reqArgs.add(JSON.toJSONString(result));
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-			reqLog.append("<=== {}: {} ({} ms)\n");
-			reqArgs.add(requestMethod);
-			reqArgs.add(requestURI);
+			reqLog.append("TotalTime: {} ms\n");
 			reqArgs.add(tookMs);
-			log.info(reqLog.toString(), reqArgs.toArray());
 			reqLog.append("================  Response End   ================\n");
+			log.info(reqLog.toString(), reqArgs.toArray());
 		}
 	}
 

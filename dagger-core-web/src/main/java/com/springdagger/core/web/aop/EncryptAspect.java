@@ -39,9 +39,9 @@ import java.util.*;
  * @Description: TODO
  */
 @Slf4j
-@Component
-@Aspect
-@Order(1)
+//@Component
+//@Aspect
+//@Order(1)
 public class EncryptAspect {
 
     private static final String SIGN_PARAM = "sign";
