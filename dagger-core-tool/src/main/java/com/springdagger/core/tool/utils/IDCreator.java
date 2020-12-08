@@ -171,4 +171,8 @@ public class IDCreator {
         return ID_CREATOR.nextId();
     }
 
+    public static String getIdStr() {
+        return String.valueOf(ID_CREATOR.nextId());
+    }
+
 }

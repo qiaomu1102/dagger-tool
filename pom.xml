@@ -21,6 +21,7 @@
         <module>dagger-core-pay</module>
         <module>dagger-core-rabbitmq</module>
         <module>dagger-core-secure</module>
+        <module>dagger-core-message</module>
     </modules>
 
     <properties>
