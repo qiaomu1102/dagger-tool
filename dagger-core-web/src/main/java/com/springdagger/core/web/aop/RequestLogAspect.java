@@ -79,10 +79,6 @@ public class RequestLogAspect {
 //		}
 		// 打印执行时间
 		long startNs = System.nanoTime();
-		log.info(reqLog.toString(), reqArgs.toArray());
-
-		// aop 执行后的日志
-		// 日志参数
 		try {
 			Object result = point.proceed();
 			// 打印返回结构体

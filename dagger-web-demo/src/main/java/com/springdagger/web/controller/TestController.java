@@ -6,8 +6,10 @@ import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.support.Kv;
 import com.springdagger.core.tool.utils.RedisUtil;
 import com.springdagger.core.web.annotation.CloseLimit;
+import com.springdagger.core.web.annotation.DecryptAndVerify;
 import com.springdagger.core.web.annotation.EncryptParameter;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
+import com.springdagger.core.web.model.EncryptedReq;
 import com.springdagger.web.config.Const;
 import com.springdagger.web.entity.User;
 import com.springdagger.web.entity.UserBody;
@@ -16,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -85,8 +88,22 @@ public class TestController {
     @PostMapping("/save")
     @ApiOperationSupport(order = 5)
     @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")
-    public R<UserBody> save(@RequestBody UserBody userBody) {
-        log.info(JSON.toJSONString(userBody));
+    public R<UserBody> save(@Validated @RequestBody UserBody userBody) {
+//        log.info(JSON.toJSONString(userBody));
         return R.data(userBody);
     }
+
+    @DecryptAndVerify(decryptClass = UserBody.class)
+    @PostMapping("/save2")
+    @ApiOperationSupport(order = 5)
+    @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")
+    public R<UserBody> save2(@Validated @RequestBody EncryptedReq<UserBody> userBody) {
+        log.info("save============" + JSON.toJSONString(userBody));
+        UserBody userBody1 = new UserBody();
+        userBody1.setAge(30);
+        userBody1.setName("asdfasf");
+        return R.data(userBody1);
+    }
+
+
 }

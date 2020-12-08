@@ -12,16 +12,11 @@ import com.springdagger.core.tool.utils.security.RSAUtil;
 import com.springdagger.core.web.annotation.EncryptParameter;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.InputStreamSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.WebRequest;
@@ -36,12 +31,10 @@ import java.util.*;
 /**
  * @author: qiaomu
  * @date: 2020/12/3 16:02
- * @Description: TODO
+ * @Description: 弃用
  */
 @Slf4j
-//@Component
-//@Aspect
-//@Order(1)
+@Deprecated
 public class EncryptAspect {
 
     private static final String SIGN_PARAM = "sign";

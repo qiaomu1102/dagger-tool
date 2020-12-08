@@ -1,9 +1,16 @@
 package com.springdagger.core.tool.utils.security;
 
+import com.alibaba.fastjson.JSON;
+import com.springdagger.core.tool.utils.StringUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
 
 /**
  * @package: com.qiaomu.utils
@@ -28,6 +35,11 @@ public class Md5Util {
         return byte2Hex(md5Bytes);
     }
 
+    public static String md5BySortedMap(SortedMap<String, Object> paramMap) {
+        String signStr = getSignStr(paramMap);
+        return md5(signStr);
+    }
+
     private static String byte2Hex(byte[] bytes) {
         StringBuilder builder = new StringBuilder();
         String stmp = "";
@@ -40,6 +52,25 @@ public class Md5Util {
             }
         }
         return builder.toString().toLowerCase();
+    }
+
+    private static String getSignStr(SortedMap<String, Object> paramMap) {
+        StringBuilder sb = new StringBuilder();
+        Set<Map.Entry<String, Object>> es = paramMap.entrySet();
+        for (Map.Entry<String, Object> entry : es) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            String valueStr;
+            if (value instanceof List) {
+                valueStr = JSON.toJSONString(value);
+            } else {
+                valueStr = String.valueOf(value);
+            }
+            if (StringUtil.isNoneBlank(valueStr)) {
+                sb.append(key).append("=").append(value).append("&");
+            }
+        }
+        return sb.substring(0, sb.length() - 1);
     }
 
     // 测试主函数

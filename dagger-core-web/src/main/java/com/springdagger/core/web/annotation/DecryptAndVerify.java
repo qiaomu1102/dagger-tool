@@ -10,22 +10,18 @@ import java.lang.annotation.Target;
 
 /**
  * @author: qiaomu
- * @date: 2020/12/3 11:19
+ * @date: 2020/12/7 17:15
  * @Description: TODO
  */
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Order
-public @interface EncryptParameter {
+public @interface DecryptAndVerify {
 
-    /**
-     * 加密方式
-     */
-    EncryptTypeEnum encryptType() default EncryptTypeEnum.MD5;
+    /** 解密后的参数类型 */
+    Class<?> decryptClass();
 
-    /**
-     * 加密盐值
-     */
+    /** 加密密钥 */
     String signKey() default "daggerEncryptKey";
 
     /**
@@ -38,4 +34,13 @@ public @interface EncryptParameter {
      */
     boolean outEncode() default true;
 
+    /**
+     * 入参加密类型
+     */
+    EncryptTypeEnum getInEncryptType() default EncryptTypeEnum.AES_MD5;
+
+    /**
+     * 出参加密类型
+     */
+    EncryptTypeEnum getOutEncryptType() default EncryptTypeEnum.AES;
 }

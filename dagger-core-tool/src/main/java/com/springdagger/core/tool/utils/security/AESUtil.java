@@ -22,7 +22,7 @@ public class AESUtil {
     /**
      * 算法
      */
-    private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
+    private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";// 加密算法/工作模式/填充方式
 
 
     /**
@@ -68,7 +68,7 @@ public class AESUtil {
             //初始化，此方法可以采用三种方式，按服务器要求来添加。（1）无第三个参数（2）第三个参数为SecureRandom random = new SecureRandom();中random对象，随机数。(AES不可采用这种方法)（3）采用此代码中的IVParameterSpec
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
             byte[] byteAes = cipher.doFinal(content.getBytes(UTF_ENCODE));
-            return Base64.getUrlEncoder().encodeToString(byteAes);
+            return Base64Utils.encodeToString(byteAes);
         } catch (Exception e) {
             e.printStackTrace();
         }
