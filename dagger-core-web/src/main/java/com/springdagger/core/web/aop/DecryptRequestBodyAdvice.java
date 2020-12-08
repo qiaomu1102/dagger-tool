@@ -115,7 +115,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         }
 
         private String aesMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
@@ -127,7 +127,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         }
 
         private String rsaMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
             }

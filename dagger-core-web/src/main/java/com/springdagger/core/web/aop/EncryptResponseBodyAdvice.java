@@ -45,8 +45,10 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             switch (encryptAnnotation.getOutEncryptType()){
                 case AES:
                     r.setData(AESUtil.encrypt(encryptAnnotation.signKey(), content));
+                    break;
                 case RSA:
                     r.setData(RSAUtil.encrypt(content, encryptAnnotation.signKey()));
+                    break;
             }
             return r;
         }

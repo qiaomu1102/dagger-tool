@@ -73,7 +73,6 @@ public class TestController {
         return R.data(user);
     }
 
-    @EncryptParameter()
     @ApiOperationSupport(order = 4)
     @ApiOperation(value = "4.0获取url")
     @GetMapping(value = "/htbb_url", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -84,7 +83,6 @@ public class TestController {
         return R.data(user);
     }
 
-    @EncryptParameter
     @PostMapping("/save")
     @ApiOperationSupport(order = 5)
     @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")
@@ -98,6 +96,18 @@ public class TestController {
     @ApiOperationSupport(order = 5)
     @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")
     public R<UserBody> save2(@Validated @RequestBody EncryptedReq<UserBody> userBody) {
+        log.info("save============" + JSON.toJSONString(userBody));
+        UserBody userBody1 = new UserBody();
+        userBody1.setAge(30);
+        userBody1.setName("asdfasf");
+        return R.data(userBody1);
+    }
+
+    @DecryptAndEncrypt(decryptClass = UserBody.class, outEncode = false)
+    @PostMapping("/save3")
+    @ApiOperationSupport(order = 5)
+    @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")
+    public R<UserBody> save3(@Validated @RequestBody EncryptedReq<UserBody> userBody) {
         log.info("save============" + JSON.toJSONString(userBody));
         UserBody userBody1 = new UserBody();
         userBody1.setAge(30);
