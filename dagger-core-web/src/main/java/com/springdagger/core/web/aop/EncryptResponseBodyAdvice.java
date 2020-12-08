@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.RSAUtil;
-import com.springdagger.core.web.annotation.DecryptAndVerify;
+import com.springdagger.core.web.annotation.DecryptAndEncrypt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -26,14 +26,14 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
-        DecryptAndVerify encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndVerify.class);
+        DecryptAndEncrypt encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndEncrypt.class);
         return encryptAnnotation != null && encryptAnnotation.outEncode();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        DecryptAndVerify encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndVerify.class);
+        DecryptAndEncrypt encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndEncrypt.class);
         if (encryptAnnotation == null || !encryptAnnotation.outEncode()) {
             return body;
         }

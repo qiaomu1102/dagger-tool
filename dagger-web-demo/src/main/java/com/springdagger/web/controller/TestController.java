@@ -6,7 +6,7 @@ import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.support.Kv;
 import com.springdagger.core.tool.utils.RedisUtil;
 import com.springdagger.core.web.annotation.CloseLimit;
-import com.springdagger.core.web.annotation.DecryptAndVerify;
+import com.springdagger.core.web.annotation.DecryptAndEncrypt;
 import com.springdagger.core.web.annotation.EncryptParameter;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.core.web.model.EncryptedReq;
@@ -93,7 +93,7 @@ public class TestController {
         return R.data(userBody);
     }
 
-    @DecryptAndVerify(decryptClass = UserBody.class)
+    @DecryptAndEncrypt(decryptClass = UserBody.class)
     @PostMapping("/save2")
     @ApiOperationSupport(order = 5)
     @ApiOperation(value = "5.0测试保存", notes = "测试保存用户信息功能")

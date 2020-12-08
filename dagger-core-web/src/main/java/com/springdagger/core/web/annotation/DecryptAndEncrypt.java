@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Order
-public @interface DecryptAndVerify {
+public @interface DecryptAndEncrypt {
 
     /** 解密后的参数类型 */
     Class<?> decryptClass();

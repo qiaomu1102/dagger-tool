@@ -5,11 +5,10 @@ import com.springdagger.core.tool.api.BizException;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.Md5Util;
-import com.springdagger.core.web.annotation.DecryptAndVerify;
+import com.springdagger.core.web.annotation.DecryptAndEncrypt;
 import com.springdagger.core.web.model.EncryptedReq;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +28,9 @@ public class DecryptAndVerifyAspect {
 //             "@within(org.springframework.web.bind.annotation.RestController))"
 //    )
     @SuppressWarnings("unchecked")
-    public Object around(ProceedingJoinPoint joinPoint, DecryptAndVerify decryptAndVerify) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint, DecryptAndEncrypt decryptAndEncrypt) throws Throwable {
         log.info("DecryptAndVerifyAspect=======================");
-        if (decryptAndVerify.inDecode()) {
+        if (decryptAndEncrypt.inDecode()) {
             Object[] args = joinPoint.getArgs();
             if (args == null || args.length == 0) {
                 throw new BizException(joinPoint.getSignature().getName() + "，参数为空");
@@ -46,9 +45,9 @@ public class DecryptAndVerifyAspect {
             if (encryptedReq == null) {
                 throw new BizException(joinPoint.getSignature().getName() + "，参数中无待解密类");
             }
-            String decryptedData = decryptAndVerify(decryptAndVerify, encryptedReq);
+            String decryptedData = decryptAndVerify(decryptAndEncrypt, encryptedReq);
 
-            Object data = JSON.parseObject(decryptedData, decryptAndVerify.decryptClass());
+            Object data = JSON.parseObject(decryptedData, decryptAndEncrypt.decryptClass());
             log.info("DecryptAndVerifyAspect====data=== " + JSON.toJSONString(data));
             encryptedReq.setData(data);
         }
@@ -57,18 +56,18 @@ public class DecryptAndVerifyAspect {
         if (proceed instanceof R) {
             R<Object> r = (R<Object>) proceed;
             log.info("DecryptAndVerifyAspect====data=== " + JSON.toJSONString(r));
-            r.setData(AESUtil.encrypt(decryptAndVerify.signKey(), JSON.toJSONString(r.getData())));
+            r.setData(AESUtil.encrypt(decryptAndEncrypt.signKey(), JSON.toJSONString(r.getData())));
             return r;
         }
         return proceed;
     }
 
-    private String decryptAndVerify(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
+    private String decryptAndVerify(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
         String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
         if (!sign.equals(encryptedReq.getSign())) {
             throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
         }
-        String decoderStr = AESUtil.decoder(decryptAndVerify.signKey(), encryptedReq.getEncryptedData());
+        String decoderStr = AESUtil.decoder(decryptAndEncrypt.signKey(), encryptedReq.getEncryptedData());
         if (decoderStr == null) {
             throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
         }

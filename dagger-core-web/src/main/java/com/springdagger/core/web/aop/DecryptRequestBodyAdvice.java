@@ -8,7 +8,7 @@ import com.springdagger.core.tool.utils.StringUtil;
 import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.Md5Util;
 import com.springdagger.core.tool.utils.security.RSAUtil;
-import com.springdagger.core.web.annotation.DecryptAndVerify;
+import com.springdagger.core.web.annotation.DecryptAndEncrypt;
 import com.springdagger.core.web.model.EncryptedReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -36,13 +36,13 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
-        DecryptAndVerify encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndVerify.class);
+        DecryptAndEncrypt encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndEncrypt.class);
         return encryptAnnotation != null && encryptAnnotation.inDecode();
     }
 
     @Override
     public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) throws IOException {
-        DecryptAndVerify encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndVerify.class);
+        DecryptAndEncrypt encryptAnnotation = methodParameter.getMethodAnnotation(DecryptAndEncrypt.class);
         if (encryptAnnotation != null && encryptAnnotation.inDecode()) {
             return new DecryptVerifyHttpInputMessage(httpInputMessage, encryptAnnotation);
         }
@@ -62,11 +62,11 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
     static class DecryptVerifyHttpInputMessage implements HttpInputMessage {
 
         private final HttpInputMessage inputMessage;
-        private final DecryptAndVerify decryptAndVerify;
+        private final DecryptAndEncrypt decryptAndEncrypt;
 
-        public DecryptVerifyHttpInputMessage(HttpInputMessage httpInputMessage, DecryptAndVerify encryptAnnotation) {
+        public DecryptVerifyHttpInputMessage(HttpInputMessage httpInputMessage, DecryptAndEncrypt encryptAnnotation) {
             this.inputMessage = httpInputMessage;
-            this.decryptAndVerify = encryptAnnotation;
+            this.decryptAndEncrypt = encryptAnnotation;
         }
 
         @Override
@@ -80,21 +80,21 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             String body = IoUtil.toString(inputMessage.getBody());
             EncryptedReq<Object> encryptedReq = JSON.parseObject(body, EncryptedReq.class);
             String decryptedData = "";
-            switch (decryptAndVerify.getInEncryptType()) {
+            switch (decryptAndEncrypt.getInEncryptType()) {
                 case AES_MD5:
-                    decryptedData = aesMd5Decrypt(decryptAndVerify, encryptedReq);
+                    decryptedData = aesMd5Decrypt(decryptAndEncrypt, encryptedReq);
                     break;
                 case RSA_MD5:
-                    decryptedData = rsaMd5Decrypt(decryptAndVerify, encryptedReq);
+                    decryptedData = rsaMd5Decrypt(decryptAndEncrypt, encryptedReq);
                     break;
                 case AES:
-                    decryptedData = aesDecrypt(decryptAndVerify, encryptedReq);
+                    decryptedData = aesDecrypt(decryptAndEncrypt, encryptedReq);
                     break;
                 case RSA:
-                    decryptedData = rsaDecrypt(decryptAndVerify, encryptedReq);
+                    decryptedData = rsaDecrypt(decryptAndEncrypt, encryptedReq);
                     break;
                 case MD5:
-                    boolean verify = md5Verify(decryptAndVerify, encryptedReq);
+                    boolean verify = md5Verify(decryptAndEncrypt, encryptedReq);
                     if (verify) {
                         return inputMessage.getBody();
                     } else {
@@ -104,7 +104,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             Object data = null;
 
             try {
-                data = JSON.parseObject(decryptedData, decryptAndVerify.decryptClass());
+                data = JSON.parseObject(decryptedData, decryptAndEncrypt.decryptClass());
             } catch (Exception e) {
                 log.error("解析错误：" + e);
                 throw new BizException("验签解析失败： " + decryptedData);
@@ -114,50 +114,50 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             return new ByteArrayInputStream(JSON.toJSONString(encryptedReq).getBytes(StandardCharsets.UTF_8));
         }
 
-        private String aesMd5Decrypt(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndVerify.signKey());
+        private String aesMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
-            String decoderStr = AESUtil.decoder(decryptAndVerify.signKey(), encryptedReq.getEncryptedData());
+            String decoderStr = AESUtil.decoder(decryptAndEncrypt.signKey(), encryptedReq.getEncryptedData());
             if (decoderStr == null) {
                 throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
 
-        private String rsaMd5Decrypt(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndVerify.signKey());
+        private String rsaMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
-            String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndVerify.signKey());
+            String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndEncrypt.signKey());
             if (decoderStr == null) {
                 throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
 
-        private String rsaDecrypt(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
-            String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndVerify.signKey());
+        private String rsaDecrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
+            String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndEncrypt.signKey());
             if (decoderStr == null) {
                 throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
 
-        private String aesDecrypt(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
-            String decoderStr = AESUtil.decoder(decryptAndVerify.signKey(), encryptedReq.getEncryptedData());
+        private String aesDecrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
+            String decoderStr = AESUtil.decoder(decryptAndEncrypt.signKey(), encryptedReq.getEncryptedData());
             if (decoderStr == null) {
                 throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
 
-        private boolean md5Verify(DecryptAndVerify decryptAndVerify, EncryptedReq<Object> encryptedReq) {
+        private boolean md5Verify(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             SortedMap<String, Object> paramMap = new TreeMap<>(BeanUtil.toMap(encryptedReq.getData()));
             String signStr = getSignStr(paramMap);
-            String sign = Md5Util.md5(signStr + encryptedReq.getTimestamp() + decryptAndVerify.signKey());
+            String sign = Md5Util.md5(signStr + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
