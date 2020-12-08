@@ -23,11 +23,11 @@ import java.util.Map;
 @Deprecated
 public class DecryptAndVerifyAspect {
 
-    @Around(
-            "@annotation(decryptAndVerify)&&" +
-             "(@within(org.springframework.stereotype.Controller) ||" +
-             "@within(org.springframework.web.bind.annotation.RestController))"
-    )
+//    @Around(
+//            "@annotation(decryptAndVerify)&&" +
+//             "(@within(org.springframework.stereotype.Controller) ||" +
+//             "@within(org.springframework.web.bind.annotation.RestController))"
+//    )
     @SuppressWarnings("unchecked")
     public Object around(ProceedingJoinPoint joinPoint, DecryptAndVerify decryptAndVerify) throws Throwable {
         log.info("DecryptAndVerifyAspect=======================");

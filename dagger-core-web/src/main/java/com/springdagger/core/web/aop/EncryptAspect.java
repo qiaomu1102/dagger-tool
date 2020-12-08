@@ -39,11 +39,11 @@ public class EncryptAspect {
 
     private static final String SIGN_PARAM = "sign";
 
-    @Before(
-            "@annotation(encryptParameter)&&" +
-            "(@within(org.springframework.stereotype.Controller) ||" +
-            "@within(org.springframework.web.bind.annotation.RestController))"
-    )
+//    @Before(
+//            "@annotation(encryptParameter)&&" +
+//            "(@within(org.springframework.stereotype.Controller) ||" +
+//            "@within(org.springframework.web.bind.annotation.RestController))"
+//    )
     public void decryptParameter(JoinPoint point, EncryptParameter encryptParameter) throws Throwable {
         log.info("decryptParameter: ===================================");
         if (!encryptParameter.inDecode()) {
@@ -151,9 +151,9 @@ public class EncryptAspect {
     }
 
 
-    @AfterReturning(returning = "result", pointcut = "@annotation(encryptParameter)&&" +
-            "(@within(org.springframework.stereotype.Controller) ||" +
-            "@within(org.springframework.web.bind.annotation.RestController))")
+//    @AfterReturning(returning = "result", pointcut = "@annotation(encryptParameter)&&" +
+//            "(@within(org.springframework.stereotype.Controller) ||" +
+//            "@within(org.springframework.web.bind.annotation.RestController))")
     public void encryptParameter(EncryptParameter encryptParameter, Object result) {
         String jsonString = JSON.toJSONString(result);
         log.info("encryptParameter =========== " + jsonString + "\n");

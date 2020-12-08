@@ -53,7 +53,7 @@ public class RequestLogAspect {
 		String requestMethod = request.getMethod();
 
 		// 构建成一条长 日志，避免并发下日志错乱
-		StringBuilder reqLog = new StringBuilder(500);
+		StringBuilder reqLog = new StringBuilder(1000);
 		List<Object> reqArgs = new ArrayList<>();
 		reqLog.append("\n\n================  Request Start  ================\n");
 		reqLog.append("===> {}: {}");
