@@ -3,6 +3,7 @@ package com.springdagger.core.web.exception;
 import com.springdagger.core.tool.api.BaseException;
 import com.springdagger.core.tool.api.R;
 import com.springdagger.core.tool.api.ResultCode;
+import com.springdagger.core.tool.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -121,7 +122,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R<Object>  handleError(BaseException e) {
         log.error("业务异常", e);
-        return R.fail(e.getIResultCode());
+        if (e.getIResultCode() != null) {
+            if (StringUtil.isNoneBlank(e.getMessage())) {
+                return R.fail(e.getIResultCode(), e.getMessage());
+            } else {
+                return R.fail(e.getIResultCode());
+            }
+        } else {
+            return R.fail(e.getMessage());
+        }
     }
 
     @ExceptionHandler(Throwable.class)

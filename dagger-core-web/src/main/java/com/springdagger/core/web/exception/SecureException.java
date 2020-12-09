@@ -11,6 +11,10 @@ import com.springdagger.core.tool.api.ResultCode;
  */
 public class SecureException extends BaseException {
 
+    public SecureException() {
+        iResultCode = ResultCode.UN_AUTHORIZED;
+    }
+
     public SecureException(String message) {
         super(message);
         iResultCode = ResultCode.UN_AUTHORIZED;
@@ -20,7 +24,7 @@ public class SecureException extends BaseException {
         super(iResultCode);
     }
 
-    public SecureException(IResultCode iResultCode, Object resultData) {
-        super(iResultCode, resultData);
+    public SecureException(IResultCode iResultCode, String message) {
+        super(iResultCode, message);
     }
 }

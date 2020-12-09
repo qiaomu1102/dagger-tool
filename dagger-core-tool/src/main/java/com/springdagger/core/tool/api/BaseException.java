@@ -13,24 +13,25 @@ import lombok.EqualsAndHashCode;
 public class BaseException extends RuntimeException {
 
     public IResultCode iResultCode;
-    public Object resultData;
+    public String message;
 
-    public BaseException() {
-        iResultCode = ResultCode.FAILURE;
+    public BaseException(){
+        this.iResultCode = ResultCode.FAILURE;
     }
 
     public BaseException(String message){
         super(message);
+        this.message = message;
     }
 
     public BaseException(IResultCode iResultCode){
         super(iResultCode.getMessage());
         this.iResultCode = iResultCode;
-        this.resultData = null;
     }
 
-    public BaseException(IResultCode iResultCode, Object resultData){
+    public BaseException(IResultCode iResultCode, String message){
+        super(message);
         this.iResultCode = iResultCode;
-        this.resultData = resultData;
+        this.message = message;
     }
 }

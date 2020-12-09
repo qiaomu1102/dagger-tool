@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.htbx.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.springdagger.web.controller"))
                 .paths(PathSelectors.any())
                 .build();
 
