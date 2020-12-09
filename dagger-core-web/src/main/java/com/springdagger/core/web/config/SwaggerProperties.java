@@ -3,7 +3,6 @@ package com.springdagger.core.web.config;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author: qiaomu
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
  * @Description: TODO
  */
 @Data
-@Configuration
 @ConfigurationProperties(prefix = "swagger")
 public class SwaggerProperties {
 
