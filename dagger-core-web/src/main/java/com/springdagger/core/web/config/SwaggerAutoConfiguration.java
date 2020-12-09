@@ -1,6 +1,8 @@
 package com.springdagger.core.web.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,27 +25,34 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableKnife4j
 @Profile({"dev", "test"})
-public class SwaggerConfig {
+@EnableConfigurationProperties(SwaggerProperties.class)
+public class SwaggerAutoConfiguration {
 
     @Bean
-    public Docket createRestApi() {
+    @ConditionalOnMissingBean
+    public SwaggerProperties swaggerProperties() {
+        return new SwaggerProperties();
+    }
+
+    @Bean
+    public Docket createRestApi(SwaggerProperties swaggerProperties) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfo(swaggerProperties))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.springdagger.web.controller"))
+                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build();
 
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
-                .title("人寿保险后端接口API")
-                .description("使用于人寿保险小程序后端API")
-                .termsOfServiceUrl("http://testlife.haitunbx.com/htbx-life/")
-                .contact(new Contact("qiaomu", "http:", "kexiong@hthu.com.cn"))
-                .version("V1.0")
+                .title(swaggerProperties.getTitle())
+                .description(swaggerProperties.getDescription())
+                .termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
+                .contact(new Contact(swaggerProperties.getContact().getName(), swaggerProperties.getContact().getUrl(), swaggerProperties.getContact().getEmail()))
+                .version(swaggerProperties.getVersion())
                 .build();
     }
 }
