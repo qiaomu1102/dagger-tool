@@ -19,9 +19,9 @@ public enum ResultCode implements IResultCode {
 	SUCCESS(HttpServletResponse.SC_OK, "操作成功"),
 
 	/**
-	 * 业务异常400
+	 * 未知异常400
 	 */
-	FAILURE(HttpServletResponse.SC_BAD_REQUEST, "业务异常"),
+	FAILURE(HttpServletResponse.SC_BAD_REQUEST, "未知异常"),
 
 	/**
 	 * 请求未授权401
@@ -85,14 +85,16 @@ public enum ResultCode implements IResultCode {
 	LOGIN_EXPIRED(996, "登陆失效"),
 
 	/**
-	 * 该接口已关闭, 禁止访问403
-	 */
-	REQ_FORBIDDEN(995, "该接口已关闭, 禁止访问"),
-
-	/**
 	 * 解密异常
 	 */
-	DECRYPT_ERROR(994, "解密异常");
+	VERIFY_ERROR(995, "解密异常"),
+
+	/**
+	 * 该接口已关闭, 禁止访问403
+	 */
+	REQ_FORBIDDEN(994, "该接口已关闭, 禁止访问");
+
+
 
 	/**
 	 * code编码

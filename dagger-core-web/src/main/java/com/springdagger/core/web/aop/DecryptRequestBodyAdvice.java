@@ -9,6 +9,7 @@ import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.Md5Util;
 import com.springdagger.core.tool.utils.security.RSAUtil;
 import com.springdagger.core.web.annotation.DecryptAndEncrypt;
+import com.springdagger.core.web.exception.VerifyException;
 import com.springdagger.core.web.model.EncryptedReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -98,7 +99,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
                     if (verify) {
                         return inputMessage.getBody();
                     } else {
-                        throw new BizException("验签失败");
+                        throw new VerifyException("验签失败");
                     }
             }
             Object data = null;
@@ -107,7 +108,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
                 data = JSON.parseObject(decryptedData, decryptAndEncrypt.decryptClass());
             } catch (Exception e) {
                 log.error("解析错误：" + e);
-                throw new BizException("验签解析失败： " + decryptedData);
+                throw new VerifyException("验签解析失败： " + decryptedData);
             }
             log.info("DecryptRequestBodyAdvice====data=== " + JSON.toJSONString(data));
             encryptedReq.setData(data);
@@ -117,11 +118,11 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         private String aesMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
             if (!sign.equals(encryptedReq.getSign())) {
-                throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
             String decoderStr = AESUtil.decoder(decryptAndEncrypt.signKey(), encryptedReq.getEncryptedData());
             if (decoderStr == null) {
-                throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
@@ -129,11 +130,11 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         private String rsaMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
             if (!sign.equals(encryptedReq.getSign())) {
-                throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
             String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndEncrypt.signKey());
             if (decoderStr == null) {
-                throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
@@ -141,7 +142,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         private String rsaDecrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             String decoderStr = RSAUtil.decrypt(encryptedReq.getEncryptedData(), decryptAndEncrypt.signKey());
             if (decoderStr == null) {
-                throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
@@ -149,7 +150,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         private String aesDecrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             String decoderStr = AESUtil.decoder(decryptAndEncrypt.signKey(), encryptedReq.getEncryptedData());
             if (decoderStr == null) {
-                throw new BizException("解密失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("解密失败：" + JSON.toJSONString(encryptedReq));
             }
             return decoderStr;
         }
@@ -159,7 +160,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             String signStr = getSignStr(paramMap);
             String sign = Md5Util.md5(signStr + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
             if (!sign.equals(encryptedReq.getSign())) {
-                throw new BizException("验签失败：" + JSON.toJSONString(encryptedReq));
+                throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
             return true;
         }
