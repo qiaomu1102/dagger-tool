@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public @interface CloseLimit {
 
-    String explain() default "该服务已被关闭！";
+    String explain() default "该接口已关闭, 禁止访问";
 
 }

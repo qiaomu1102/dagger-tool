@@ -33,11 +33,10 @@ public class CloseLimitAspect {
             "@within(org.springframework.web.bind.annotation.RestController))"
              )
     public void requestLimit(CloseLimit limit) {
-        log.info("requestLimit: ===================================");
         ServletRequestAttributes attributes = Objects.requireNonNull((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         HttpServletRequest request = attributes.getRequest();
         String url = request.getRequestURL().toString();
         log.error(url + "该接口被调用");
-        throw new CloseLimitException(ResultCode.REQ_FORBIDDEN);
+        throw new CloseLimitException(limit.explain());
     }
 }

@@ -44,10 +44,7 @@ public class RequestLogAspect {
 					"@within(org.springframework.web.bind.annotation.RestController))"
 	)
 	public Object aroundApi(ProceedingJoinPoint point) throws Throwable {
-		log.info("RequestLogAspect============aroundApi=====================");
-
 		Map<String, Object> paraMap = getParams(point);
-
 		HttpServletRequest request = WebUtil.getRequest();
 		String requestURI = Objects.requireNonNull(request).getRequestURI();
 		String requestMethod = request.getMethod();
@@ -66,7 +63,7 @@ public class RequestLogAspect {
 			reqLog.append("\nParameters: {}\n");
 			reqArgs.add(JSON.toJSONString(paraMap));
 		}
-		reqLog.append("token:  {}\n");
+		reqLog.append("Token:  {}\n");
 		reqArgs.add(request.getHeader("token"));
 		// 打印请求头
 //		Enumeration<String> headers = request.getHeaderNames();
