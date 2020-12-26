@@ -101,14 +101,12 @@ public class RedisUtil {
 
 	public <T> T getEntity(String key, Class<T> clz) {
 		JSONObject jsonObject = key == null ? null : (JSONObject) redisTemplate.opsForValue().get(key);
-		if (jsonObject == null) return null;
-		return jsonObject.toJavaObject(clz);
+		return jsonObject == null ? null : jsonObject.toJavaObject(clz);
 	}
 
 	public <T> List<T> getList(String key, Class<T> clz) {
 		JSONArray jsonObject = key == null ? null : (JSONArray) redisTemplate.opsForValue().get(key);
-		if (jsonObject == null) return null;
-		return jsonObject.toJavaList(clz);
+		return jsonObject == null ? null : jsonObject.toJavaList(clz);
 	}
 
 
