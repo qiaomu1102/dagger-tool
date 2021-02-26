@@ -1,6 +1,7 @@
 package com.springdagger.core.web.aop;
 
 import com.alibaba.fastjson.JSON;
+import com.htbb.core.web.context.UserContextHolder;
 import com.springdagger.core.tool.utils.BeanUtil;
 import com.springdagger.core.tool.utils.ClassUtil;
 import com.springdagger.core.tool.utils.WebUtil;
@@ -35,11 +36,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Aspect
 @Configuration
-@ConditionalOnProperty(prefix = "webLog",name = "enable",havingValue = "true")
+@ConditionalOnProperty(prefix = "dagger.common",name = "web-log-enable",havingValue = "true")
 public class RequestLogAspect {
 
 	@Around(
-			"execution(!static com.springdagger.core.tool.api.R *(..)) && " +
+			"execution(!static com.springdagger.core.tools.api.R *(..)) && " +
 					"(@within(org.springframework.stereotype.Controller) || " +
 					"@within(org.springframework.web.bind.annotation.RestController))"
 	)
@@ -78,9 +79,19 @@ public class RequestLogAspect {
 		long startNs = System.nanoTime();
 		try {
 			Object result = point.proceed();
+			try {
+				String userId = UserContextHolder.getUserId();
+				reqLog.append("UserId:  {}\n");
+				reqArgs.add(userId);
+			} catch (Exception e) {}
 			// 打印返回结构体
 			reqLog.append("ResponseBody:  {}\n");
-			reqArgs.add(JSON.toJSONString(result));
+			String resultStr = JSON.toJSONString(result);
+			if (resultStr.length() > 1000) {
+				reqArgs.add(resultStr.substring(0, 1000));
+			} else {
+				reqArgs.add(result);
+			}
 			return result;
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);

@@ -7,80 +7,48 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by ace on 2017/9/10.
  */
 public class JWTHelper {
-    private static RsaKeyHelper rsaKeyHelper = new RsaKeyHelper();
+
+    private static com.htbb.core.web.jwt.RsaKeyHelper rsaKeyHelper = new com.htbb.core.web.jwt.RsaKeyHelper();
 
     /**
-     * 密钥加密token
+     * 生成token
      */
-    public static String generateToken(IJWTInfo jwtInfo, String priKeyStr, int expire) throws Exception {
+    public static String generateToken(String value, String priKeyStr, int expireDay) throws Exception {
+        if (expireDay < 0) {
+            throw new IllegalArgumentException("过期时间不能为负数");
+        }
         return Jwts.builder()
-                .setSubject(jwtInfo.getUniqueName())
-                .claim(CommonConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_NAME, jwtInfo.getName())
-                .setExpiration(DateUtil.plusDays(DateUtil.now(), expire))
+                .setSubject(CommonConstants.JWT_SUBJECT)
+                .claim(CommonConstants.JWT_INFO_KEY, value)
+                .setExpiration(DateUtil.plusDays(DateUtil.now(), expireDay))
                 .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKeyStr))
                 .compact();
     }
 
     /**
-     * 密钥加密token
-     *
+     * 公钥解析token
      */
-    public static String generateToken(IJWTInfo jwtInfo, byte priKey[], int expire) throws Exception {
-        return Jwts.builder()
-                .setSubject(jwtInfo.getUniqueName())
-                .claim(CommonConstants.JWT_KEY_USER_ID, jwtInfo.getId())
-                .claim(CommonConstants.JWT_KEY_NAME, jwtInfo.getName())
-                .claim(CommonConstants.JWT_ID, jwtInfo.getTokenId())
-                .setExpiration(DateUtil.plusDays(DateUtil.now(), expire))
-                .signWith(SignatureAlgorithm.RS256, rsaKeyHelper.getPrivateKey(priKey))
-                .compact();
+    private static Jws<Claims> parserToken(String token, String pubKeyStr) throws Exception {
+        return Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKeyStr)).parseClaimsJws(token);
     }
 
-    /**
-     * 公钥解析token
-     */
-    public static Jws<Claims> parserToken(String token, String pubKeyPath) throws Exception {
-        return Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKeyPath)).parseClaimsJws(token);
-    }
-    /**
-     * 公钥解析token
-     *
-     */
-    public static Jws<Claims> parserToken(String token, byte[] pubKey) throws Exception {
-        return Jwts.parser().setSigningKey(rsaKeyHelper.getPublicKey(pubKey)).parseClaimsJws(token);
-    }
     /**
      * 获取token中的用户信息
      *
      */
-    public static IJWTInfo getInfoFromToken(String token, String pubKeyStr) throws Exception {
+    public static Object getInfoFromToken(String token, String pubKeyStr) throws Exception {
         if(token.startsWith("Bearer")){
             token = token.replace("Bearer ","");
         }
         Jws<Claims> claimsJws = parserToken(token, pubKeyStr);
         Claims body = claimsJws.getBody();
-        return new JWTInfo(body.getSubject(), getObjectValue(body.get(CommonConstants.JWT_KEY_USER_ID)), getObjectValue(body.get(CommonConstants.JWT_KEY_NAME)));
+        return body.get(CommonConstants.JWT_INFO_KEY);
     }
-    /**
-     * 获取token中的用户信息
-     */
-    public static IJWTInfo getInfoFromToken(String token, byte[] pubKey) throws Exception {
-        if(token.startsWith("Bearer")){
-            token = token.replace("Bearer ","");
-        }
-        Jws<Claims> claimsJws = parserToken(token, pubKey);
-        Claims body = claimsJws.getBody();
-        return new JWTInfo(body.getSubject(), getObjectValue(body.get(CommonConstants.JWT_KEY_USER_ID)), getObjectValue(body.get(CommonConstants.JWT_KEY_NAME)),getObjectValue(body.get(CommonConstants.JWT_ID)));
-    }
-
-    public static String getObjectValue(Object obj){
-        return obj==null?"":obj.toString();
-    }
-
 
 }

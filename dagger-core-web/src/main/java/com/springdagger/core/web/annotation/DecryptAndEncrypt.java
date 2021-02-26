@@ -1,6 +1,6 @@
 package com.springdagger.core.web.annotation;
 
-import com.springdagger.core.web.common.EncryptTypeEnum;
+import com.htbb.core.web.common.EncryptTypeEnum;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;
@@ -21,8 +21,11 @@ public @interface DecryptAndEncrypt {
     /** 解密后的参数类型 */
     Class<?> decryptClass();
 
-    /** 加密密钥 */
-    String signKey() default "daggerEncryptKey";
+    /** MD5加密盐值 切忌修改默认值*/
+    String md5Key() default "ht&MD5key&202012";
+
+    /** 加密密钥 切忌修改默认值*/
+    String signKey() default "HTBBEncrypt&2020";
 
     /**
      * 输入的参数是否加密
@@ -36,6 +39,7 @@ public @interface DecryptAndEncrypt {
 
     /**
      * 入参加密类型
+     * 涉及到MD5加密，需要加盐值
      */
     EncryptTypeEnum getInEncryptType() default EncryptTypeEnum.AES_MD5;
 

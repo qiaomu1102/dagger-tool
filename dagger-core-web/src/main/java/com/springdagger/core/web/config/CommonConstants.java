@@ -6,9 +6,6 @@ package com.springdagger.core.web.config;
  * @Description: TODO
  */
 public interface CommonConstants {
-    String CURRENT_USER = "current_user";
-
-    String JWT_KEY_USER_ID = "userId";
-    String JWT_KEY_NAME = "name";
-    String JWT_ID = "id";
+    String JWT_SUBJECT = "海豚保险经纪";
+    String JWT_INFO_KEY = "jwt_info_key";
 }

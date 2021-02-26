@@ -1,7 +1,8 @@
 package com.springdagger.core.web.aop;
 
 import com.alibaba.fastjson.JSON;
-import com.springdagger.core.tool.api.BizException;
+import com.htbb.core.web.exception.VerifyException;
+import com.htbb.core.web.model.EncryptedReq;
 import com.springdagger.core.tool.utils.BeanUtil;
 import com.springdagger.core.tool.utils.IoUtil;
 import com.springdagger.core.tool.utils.StringUtil;
@@ -9,8 +10,6 @@ import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.Md5Util;
 import com.springdagger.core.tool.utils.security.RSAUtil;
 import com.springdagger.core.web.annotation.DecryptAndEncrypt;
-import com.springdagger.core.web.exception.VerifyException;
-import com.springdagger.core.web.model.EncryptedReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -115,8 +114,11 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             return new ByteArrayInputStream(JSON.toJSONString(encryptedReq).getBytes(StandardCharsets.UTF_8));
         }
 
+        /**
+         * 解密方式：密文 + 时间戳 + MD5盐值  ==  签名 ？ AES解密 ： "验签失败"
+         */
         private String aesMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.md5Key());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
@@ -127,8 +129,11 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
             return decoderStr;
         }
 
+        /**
+         * 解密方式：密文 + 时间戳 + MD5盐值  ==  签名 ？ RSA解密 ： "验签失败"
+         */
         private String rsaMd5Decrypt(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
-            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp());
+            String sign = Md5Util.md5(encryptedReq.getEncryptedData() + encryptedReq.getTimestamp() + decryptAndEncrypt.md5Key());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }
@@ -158,7 +163,7 @@ public class DecryptRequestBodyAdvice implements RequestBodyAdvice {
         private boolean md5Verify(DecryptAndEncrypt decryptAndEncrypt, EncryptedReq<Object> encryptedReq) {
             SortedMap<String, Object> paramMap = new TreeMap<>(BeanUtil.toMap(encryptedReq.getData()));
             String signStr = getSignStr(paramMap);
-            String sign = Md5Util.md5(signStr + encryptedReq.getTimestamp() + decryptAndEncrypt.signKey());
+            String sign = Md5Util.md5(signStr + encryptedReq.getTimestamp()  + decryptAndEncrypt.md5Key());
             if (!sign.equals(encryptedReq.getSign())) {
                 throw new VerifyException("验签失败：" + JSON.toJSONString(encryptedReq));
             }

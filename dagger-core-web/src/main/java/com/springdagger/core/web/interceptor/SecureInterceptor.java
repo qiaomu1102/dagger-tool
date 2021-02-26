@@ -1,24 +1,24 @@
 package com.springdagger.core.web.interceptor;
 
-import com.springdagger.core.tool.api.BizException;
+import com.htbb.core.web.jwt.UserAuthUtil;
+import com.htbb.core.web.model.UserModel;
 import com.springdagger.core.tool.api.ResultCode;
 import com.springdagger.core.tool.utils.ClassUtil;
+import com.springdagger.core.tool.utils.StringUtil;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
-import com.springdagger.core.web.config.CommonConstants;
 import com.springdagger.core.web.exception.SecureException;
-import com.springdagger.core.web.jwt.IJWTInfo;
-import com.springdagger.core.web.jwt.UserAuthUtil;
-import com.springdagger.core.web.model.UserModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * @package: com.qiaomu.common.aop
@@ -30,27 +30,35 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class SecureInterceptor implements HandlerInterceptor {
 
+    private static final String SECURE_KEY = "token";
+
     @Autowired
     private UserAuthUtil userAuthUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("SecureInterceptor: ===================================");
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        IgnoreUserToken annotation = ClassUtil.getAnnotation(handlerMethod, IgnoreUserToken.class);
-        if (annotation != null) {
-            return true;
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            IgnoreUserToken annotation = ClassUtil.getAnnotation(handlerMethod, IgnoreUserToken.class);
+            if (annotation != null) {
+                return true;
+            }
         }
 
-        String token = request.getHeader("token");
-        if (StringUtils.isEmpty(token)) {
-            throw new SecureException("token is missing !");
+        log.info("请求URI为{}，验证token begin ============", request.getRequestURI());
+
+        String token = request.getHeader(SECURE_KEY);
+        if (StringUtil.isBlank(token)) {
+            Cookie cookie = WebUtils.getCookie(request, SECURE_KEY);
+            if (cookie != null) {
+                token = cookie.getValue();
+            }
         }
-        IJWTInfo ijwtInfo = userAuthUtil.checkToken(token);
-        UserModel userModel = new UserModel();
-        userModel.setUserId(ijwtInfo.getId());
-        userModel.setUserName(ijwtInfo.getUniqueName());
-        request.setAttribute(CommonConstants.CURRENT_USER, userModel);
+
+        if (StringUtil.isBlank(token)) {
+            throw new SecureException(ResultCode.TOKEN_MISSING);
+        }
+        userAuthUtil.checkToken(token);
         return true;
     }
 

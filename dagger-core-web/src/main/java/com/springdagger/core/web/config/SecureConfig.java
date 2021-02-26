@@ -25,6 +25,12 @@ public class SecureConfig {
 
     private final List<String> skipUrls = new ArrayList<>();
 
+    /** ErrorPage 页面是否激活 */
+    private boolean error_page_enable;
+
+    /** errorPage页面地址 */
+    private String error_page_path = "/default_error.html";
+
     public SecureConfig() {
         this.defaultExcludePatterns.add("/actuator/health/**");
         this.defaultExcludePatterns.add("/v2/api-docs/**");
@@ -33,8 +39,10 @@ public class SecureConfig {
         this.defaultExcludePatterns.add("/webjars/**");
         this.defaultExcludePatterns.add("/doc.html");
         this.defaultExcludePatterns.add("/service-worker.js");
-        this.defaultExcludePatterns.add("/auth/**");
-        this.defaultExcludePatterns.add("/token/**");
+        this.defaultExcludePatterns.add("/error");
+        if (error_page_enable) {
+            this.defaultExcludePatterns.add(error_page_path);
+        }
     }
 
 }

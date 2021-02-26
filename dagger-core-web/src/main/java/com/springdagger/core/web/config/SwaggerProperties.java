@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author: qiaomu
  * @date: 2020/12/9 13:50
@@ -16,7 +19,7 @@ public class SwaggerProperties {
     /**
      * 包名
      */
-    private String basePackage;
+    private List<String> basePackages = new ArrayList<>();
     /**
      * 标题
      **/

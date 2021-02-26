@@ -24,7 +24,7 @@ public class EncryptedReq<T> {
     private String encryptedData;
 
     /** 原始请求数据（解密后回填到对象） */
-    @ApiModelProperty(value = "原始请求数据")
+    @ApiModelProperty(value = "原始请求数据", hidden = true)
     private T data;
 
     /** 请求的时间戳 */

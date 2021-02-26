@@ -9,12 +9,7 @@ package com.springdagger.web.common;
 public enum EnumStatusCode {
 
     SUCCESS(0,"success"),
-    FAILURE(1, "failure"),
-
-    UNKOWN_EXCEPTION(999, "未知异常"),
-    PARAM_EXCEPTION(998, "参数错误"),
-    METHOD_UNSUPPORT_EXCEPTION(997, "方法不支持"),
-    TEST_CUSTOM_EXCEPTION(995, "测试自定义异常");
+    FAILURE(1, "failure");
 
 
     private int code;

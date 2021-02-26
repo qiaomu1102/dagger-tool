@@ -1,6 +1,7 @@
 package com.springdagger.core.web.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.htbb.core.web.util.SwaggerUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -25,28 +25,28 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableKnife4j
 @Profile({"dev", "test"})
-@EnableConfigurationProperties(SwaggerProperties.class)
+@EnableConfigurationProperties(com.htbb.core.web.config.SwaggerProperties.class)
 public class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SwaggerProperties swaggerProperties() {
-        return new SwaggerProperties();
+    public com.htbb.core.web.config.SwaggerProperties swaggerProperties() {
+        return new com.htbb.core.web.config.SwaggerProperties();
     }
 
     @Bean
-    public Docket createRestApi(SwaggerProperties swaggerProperties) {
+    public Docket createRestApi(com.htbb.core.web.config.SwaggerProperties swaggerProperties) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo(swaggerProperties))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
+                .apis(SwaggerUtil.basePackages(swaggerProperties.getBasePackages()))
                 .paths(PathSelectors.any())
                 .build();
 
     }
 
-    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
+    private ApiInfo apiInfo(com.htbb.core.web.config.SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())
                 .description(swaggerProperties.getDescription())

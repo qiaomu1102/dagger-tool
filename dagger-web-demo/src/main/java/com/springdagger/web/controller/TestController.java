@@ -42,9 +42,9 @@ public class TestController {
     @GetMapping("/env")
     @ApiOperationSupport(order = 1)
     @ApiOperation(value = "1.0获取环境")
-    public R<Boolean> getEnv() {
+    public R<String> getEnv() {
 //        redisUtil.set("test:redis:", "乔木", 10);
-        return R.data(Const.IS_PROD);
+        return R.data(Const.HTBB_URL);
     }
 
     @GetMapping("/test")
