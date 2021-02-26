@@ -15,7 +15,7 @@ public class AccessToken implements Serializable {
 
     /**
      * access_token : ACCESS_TOKEN
-     * expires_in : 7200
+     * expires_in : 7200s
      */
 
     private String access_token;

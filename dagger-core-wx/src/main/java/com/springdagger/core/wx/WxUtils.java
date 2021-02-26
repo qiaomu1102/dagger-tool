@@ -2,16 +2,13 @@ package com.springdagger.core.wx;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.springdagger.core.tool.utils.Base64Util;
 import com.springdagger.core.tool.utils.OkHttpUtil;
 import com.springdagger.core.tool.utils.StringUtil;
 import com.springdagger.core.wx.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static com.springdagger.core.wx.WxConstants.*;
@@ -29,16 +26,12 @@ public class WxUtils {
      * 网页授权
      */
     public static String authorize(AuthorizeBody body) {
-        log.info("=============== /tx  微信登陆认证  redirectUri ==========" + body.getRedirectUri());
-        String encodeUrls = Base64Util.encode(body.getRedirectUri());
-        String scope = "snsapi_base";
-        if (body.getScope() == 1) {//手动授权
-            scope = "snsapi_userinfo";
-        }
+        log.info("=============== /tx  微信登陆认证  redirectUri ==========" + JSON.toJSONString(body));
+        String scope = body.getScope() == 1 ? "snsapi_userinfo" : "snsapi_base";
         log.info("调用授权地址：" + body.getCallBackUrl());
-        String callBackUrl = body.getCallBackUrl() + "?url=" + encodeUrls;
+        String callBackUrl = body.getCallBackUrl();
         try {
-            callBackUrl = URLEncoder.encode(callBackUrl, "UTF-8");
+            callBackUrl = URLEncoder.encode(body.getCallBackUrl(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             log.error("微信授权链接编码异常", e);
         }
@@ -46,16 +39,6 @@ public class WxUtils {
         log.info("redirectUrl:" + redirectUrl);
         return redirectUrl;
     }
-
-    /**
-     * 微信授权回调，获取用户信息
-     */
-    public static WxAuthUserInfoModel totx(String code, String appId, String appSecret) {
-        WxBaseAuthOpenIdModel baseAuth = WxUtils.getBaseAuth(code, appId, appSecret);
-        Assert.notNull(baseAuth, "通过code换取网页授权access_token异常~~~");
-        return WxUtils.getWxAuthUserInfo(baseAuth.getAccess_token(), baseAuth.getOpenid());
-    }
-
 
     /**
      * 通过code换取网页授权access_token
@@ -78,7 +61,6 @@ public class WxUtils {
         String userInfo = OkHttpUtil.get(USER_INFO_URL.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openId), null);
         log.info("getWxAuthUserInfo获取用户信息请求结果:================ " + userInfo);
         if (StringUtil.isNotBlank(userInfo) && !userInfo.contains("errcode")) {
-            userInfo = new String(userInfo.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             return JSON.parseObject(userInfo, WxAuthUserInfoModel.class);
         }
         return null;
@@ -100,12 +82,12 @@ public class WxUtils {
     /**
      * jsapi_ticket是公众号用于调用微信JS接口的临时票据，jsapi_ticket的有效期为7200秒，必须在自己的服务全局缓存jsapi_ticket
      */
-    public static Map<String, String> getJSApiTicket(String accessToken, String appId) {
-        String url = JSAPI_TICKET.replace("ACCESS_TOKEN", accessToken);
-        String result = OkHttpUtil.get(url, null);
+    public static Map<String, String> getJSApiTicket(String accessToken, String appId, String url) {
+        String jsapi_url = JSAPI_TICKET.replace("ACCESS_TOKEN", accessToken);
+        String result = OkHttpUtil.get(jsapi_url, null);
         log.info("getJSApiTicket获取jsapi_ticket结果:================ " + result);
-        if (StringUtil.isNotBlank(result) && !result.contains("errcode")) {
-            JSApiTicketModel jsApiTicketModel = JSON.parseObject(result, JSApiTicketModel.class);
+        JSApiTicketModel jsApiTicketModel = JSON.parseObject(result, JSApiTicketModel.class);
+        if (jsApiTicketModel != null && jsApiTicketModel.getErrcode() == 0) {
             return JsApiSign.sign(jsApiTicketModel.getTicket(), url, appId);
         }
         return null;

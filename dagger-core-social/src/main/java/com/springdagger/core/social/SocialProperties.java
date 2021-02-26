@@ -16,7 +16,7 @@ import java.util.Map;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "com/springdagger/core/social")
+@ConfigurationProperties(prefix = "com.spring.dagger.core.social")
 public class SocialProperties {
 
 	/**
