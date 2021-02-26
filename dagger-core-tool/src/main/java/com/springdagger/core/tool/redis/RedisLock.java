@@ -6,22 +6,26 @@ import io.lettuce.core.ScriptOutputType;
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 /**
+ * @package: com.qiaomu.common.cache
  * @author: kexiong
  * @date: 2019/11/22 16:48
  * @Description:
  * 单节点Redis的分布式锁的实现, 锁不具有可重入性  https://www.jianshu.com/p/47fd7f86c848
  * lettuce作为连接池
  */
-@Slf4j
+
 public class RedisLock {
 
+    private static final Logger logger = LoggerFactory.getLogger(RedisLock.class.getSimpleName());
+
     private static int ACQUIRY_RESOLUTION_MILLIS = (int)(50.0D * (1.0D + Math.random()));
-    /** 过期时间单位为秒 */
+    /** 单位为秒 */
     private static int DEFAULT_EXPIRE_MSECS = 5;
     private static int DEFAULT_TIMEOUT_MSECS = 30 * 1000;
     private String lockKey;
@@ -58,13 +62,14 @@ public class RedisLock {
             String result = redisCommands.set(key, uuid, setArgs);
             return "OK".equalsIgnoreCase(result);
         } catch (Exception e) {
-            log.info("set redis occur an exception", e);
+            logger.info("set redis occur an exception", e);
         }
         return false;
     }
 
     /**
      * 加锁
+     * @return
      */
     public boolean lock() throws InterruptedException {
         // 产生随机数
@@ -84,9 +89,6 @@ public class RedisLock {
         return false;
     }
 
-    /**
-     * 解锁
-     */
     public boolean unLock() {
         try {
             String uuid = LOCAL.get();

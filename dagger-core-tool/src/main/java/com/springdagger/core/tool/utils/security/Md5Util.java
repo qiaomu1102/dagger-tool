@@ -3,7 +3,6 @@ package com.springdagger.core.tool.utils.security;
 import com.alibaba.fastjson.JSON;
 import com.springdagger.core.tool.utils.StringUtil;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -31,7 +30,26 @@ public class Md5Util {
             e.printStackTrace();
             return "";
         }
+        System.out.println("======================待签名字符串:\n  " + data);
         byte[] md5Bytes = md5.digest(data.getBytes(StandardCharsets.UTF_8));
+        return byte2Hex(md5Bytes);
+    }
+
+    public static String md5(String data, String key) {
+        return md5(data, key, StandardCharsets.UTF_8);
+    }
+
+    public static String md5(String data, String key, Charset charset) {
+        data += key;
+        MessageDigest md5 = null;
+        try{
+            md5 = MessageDigest.getInstance("MD5");
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+        System.out.println("======================待签名字符串:\n  " + data);
+        byte[] md5Bytes = md5.digest(data.getBytes(charset));
         return byte2Hex(md5Bytes);
     }
 
@@ -71,6 +89,26 @@ public class Md5Util {
             }
         }
         return sb.substring(0, sb.length() - 1);
+    }
+
+    /**
+     * 创建md5摘要,规则是:按参数名称a-z排序,遇到空值的参数不参加签名。
+     */
+    public static String createSign(SortedMap<String, Object> paramMap, String signKey) {
+        StringBuilder sb = new StringBuilder();
+        Set<Map.Entry<String, Object>> es = paramMap.entrySet();
+        for (Map.Entry<String, Object> entry : es) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (null != value && !"".equals(value) && !"sign".equals(key) && !"key".equals(key)) {
+                sb.append(key).append("=").append(value).append("&");
+            }
+        }
+        String md5Url = sb.substring(0, sb.length() - 1);
+
+        String sign = md5(md5Url, signKey);
+        System.out.println("======================MD5加密后的字符串: " + sign);
+        return sign;
     }
 
     // 测试主函数

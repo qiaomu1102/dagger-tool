@@ -8,7 +8,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  * @author: kexiong
@@ -151,5 +150,23 @@ public class AESUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        String key = "htbx%phone202012";
+        String phone = "13798455092";
+        String encrypt = encrypt(key, phone);
+        System.out.println("AES加密密钥： " + key);
+        System.out.println("AES加密明文： " + phone);
+        System.out.println("AES加密密文： " + encrypt);
+
+        long currentTimeMillis = System.currentTimeMillis();
+        String md5 = Md5Util.md5(encrypt + currentTimeMillis + "ht&MD5key&202012");
+        System.out.println("当前时间戳： " + currentTimeMillis);
+        System.out.println("md5加密盐值： " + "ht&MD5key&202012");
+        System.out.println("md5密文： " + md5);
+
+        String phone1 = decoder(key, encrypt);
+        System.out.println(phone1);
     }
 }

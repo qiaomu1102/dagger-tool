@@ -78,6 +78,16 @@ public enum ResultCode implements IResultCode {
 	 */
 	PARAM_VALID_ERROR(HttpServletResponse.SC_BAD_REQUEST, "参数校验失败"),
 
+	/**
+	 * 缺失token
+	 */
+	TOKEN_MISSING(998, "User token is null or empty!"),
+
+	/**
+	 * token验证失败
+	 */
+	TOKEN_UN_AUTHORIZED(997, "User token signature error!"),
+
 
 	/**
 	 * 登陆失效996
@@ -90,9 +100,14 @@ public enum ResultCode implements IResultCode {
 	VERIFY_ERROR(995, "解密异常"),
 
 	/**
-	 * 该接口已关闭, 禁止访问403
+	 * 该接口已关闭
 	 */
-	REQ_FORBIDDEN(994, "该接口已关闭, 禁止访问");
+	REQ_FORBIDDEN(994, "该接口已关闭, 禁止访问"),
+
+	/**
+	 * 该禁止重复提交
+	 */
+	REDUP_SUBMIT_ERROR(993, "禁止重复提交");
 
 
 

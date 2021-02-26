@@ -1,6 +1,7 @@
 package com.springdagger.core.tool.utils;
 
-import com.springdagger.core.tool.support.FastStringWriter;
+
+import com.htbb.core.tools.support.FastStringWriter;
 
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;

@@ -1,7 +1,7 @@
 package com.springdagger.core.tool.utils;
 
-import com.springdagger.core.tool.support.IMultiOutputStream;
-import com.springdagger.core.tool.support.ImagePosition;
+import com.htbb.core.tools.support.IMultiOutputStream;
+import com.htbb.core.tools.support.ImagePosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
