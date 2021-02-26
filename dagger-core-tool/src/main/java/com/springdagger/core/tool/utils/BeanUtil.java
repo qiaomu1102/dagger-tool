@@ -1,7 +1,7 @@
 package com.springdagger.core.tool.utils;
 
-import com.htbb.core.tools.support.BaseBeanCopier;
-import com.htbb.core.tools.support.BeanProperty;
+import com.springdagger.core.tool.support.BaseBeanCopier;
+import com.springdagger.core.tool.support.BeanProperty;
 import org.springframework.beans.BeansException;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.cglib.beans.BeanMap;

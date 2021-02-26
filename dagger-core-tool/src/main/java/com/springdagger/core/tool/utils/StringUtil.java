@@ -1,7 +1,7 @@
 package com.springdagger.core.tool.utils;
 
-import com.htbb.core.tools.support.StrFormatter;
-import com.htbb.core.tools.support.StrSpliter;
+import com.springdagger.core.tool.support.StrFormatter;
+import com.springdagger.core.tool.support.StrSpliter;
 import org.springframework.util.Assert;
 import org.springframework.web.util.HtmlUtils;
 
