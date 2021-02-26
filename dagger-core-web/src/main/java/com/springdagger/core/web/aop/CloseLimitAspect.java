@@ -1,7 +1,7 @@
 package com.springdagger.core.web.aop;
 
 import com.springdagger.core.web.annotation.CloseLimit;
-import com.htbb.core.web.exception.CloseLimitException;
+import com.springdagger.core.web.exception.CloseLimitException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -1,8 +1,6 @@
 package com.springdagger.core.web.aop;
 
 import com.alibaba.fastjson.JSON;
-import com.htbb.core.web.exception.VerifyException;
-import com.htbb.core.web.model.EncryptedReq;
 import com.springdagger.core.tool.utils.BeanUtil;
 import com.springdagger.core.tool.utils.IoUtil;
 import com.springdagger.core.tool.utils.StringUtil;
@@ -10,6 +8,8 @@ import com.springdagger.core.tool.utils.security.AESUtil;
 import com.springdagger.core.tool.utils.security.Md5Util;
 import com.springdagger.core.tool.utils.security.RSAUtil;
 import com.springdagger.core.web.annotation.DecryptAndEncrypt;
+import com.springdagger.core.web.exception.VerifyException;
+import com.springdagger.core.web.model.EncryptedReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static com.springdagger.core.web.common.EncryptTypeEnum.*;
 
 /**
  * @author: qiaomu

@@ -1,7 +1,7 @@
 package com.springdagger.core.web.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.htbb.core.web.util.SwaggerUtil;
+import com.springdagger.core.web.util.SwaggerUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,17 +25,17 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableKnife4j
 @Profile({"dev", "test"})
-@EnableConfigurationProperties(com.htbb.core.web.config.SwaggerProperties.class)
+@EnableConfigurationProperties(com.springdagger.core.web.config.SwaggerProperties.class)
 public class SwaggerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public com.htbb.core.web.config.SwaggerProperties swaggerProperties() {
-        return new com.htbb.core.web.config.SwaggerProperties();
+    public SwaggerProperties swaggerProperties() {
+        return new SwaggerProperties();
     }
 
     @Bean
-    public Docket createRestApi(com.htbb.core.web.config.SwaggerProperties swaggerProperties) {
+    public Docket createRestApi(SwaggerProperties swaggerProperties) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo(swaggerProperties))
@@ -46,7 +46,7 @@ public class SwaggerAutoConfiguration {
 
     }
 
-    private ApiInfo apiInfo(com.htbb.core.web.config.SwaggerProperties swaggerProperties) {
+    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())
                 .description(swaggerProperties.getDescription())

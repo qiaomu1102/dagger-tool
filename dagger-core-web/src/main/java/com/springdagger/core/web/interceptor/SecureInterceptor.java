@@ -1,12 +1,11 @@
 package com.springdagger.core.web.interceptor;
 
-import com.htbb.core.web.jwt.UserAuthUtil;
-import com.htbb.core.web.model.UserModel;
 import com.springdagger.core.tool.api.ResultCode;
 import com.springdagger.core.tool.utils.ClassUtil;
 import com.springdagger.core.tool.utils.StringUtil;
 import com.springdagger.core.web.annotation.IgnoreUserToken;
 import com.springdagger.core.web.exception.SecureException;
+import com.springdagger.core.web.jwt.UserAuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

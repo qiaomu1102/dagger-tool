@@ -7,14 +7,13 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ace on 2017/9/10.
  */
 public class JWTHelper {
 
-    private static com.htbb.core.web.jwt.RsaKeyHelper rsaKeyHelper = new com.htbb.core.web.jwt.RsaKeyHelper();
+    private static RsaKeyHelper rsaKeyHelper = new RsaKeyHelper();
 
     /**
      * 生成token

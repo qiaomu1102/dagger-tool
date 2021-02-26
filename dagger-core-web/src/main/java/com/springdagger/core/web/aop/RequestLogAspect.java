@@ -1,10 +1,10 @@
 package com.springdagger.core.web.aop;
 
 import com.alibaba.fastjson.JSON;
-import com.htbb.core.web.context.UserContextHolder;
 import com.springdagger.core.tool.utils.BeanUtil;
 import com.springdagger.core.tool.utils.ClassUtil;
 import com.springdagger.core.tool.utils.WebUtil;
+import com.springdagger.core.web.context.UserContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 public class RequestLogAspect {
 
 	@Around(
-			"execution(!static com.springdagger.core.tools.api.R *(..)) && " +
+			"execution(!static com.springdagger.core.tool.api.R *(..)) && " +
 					"(@within(org.springframework.stereotype.Controller) || " +
 					"@within(org.springframework.web.bind.annotation.RestController))"
 	)

@@ -1,6 +1,6 @@
 package com.springdagger.core.web.annotation;
 
-import com.htbb.core.web.common.EncryptTypeEnum;
+import com.springdagger.core.web.common.EncryptTypeEnum;
 import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.ElementType;

@@ -1,6 +1,6 @@
 package com.springdagger.core.web.config;
 
-import com.htbb.core.web.interceptor.SecureInterceptor;
+import com.springdagger.core.web.interceptor.SecureInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
